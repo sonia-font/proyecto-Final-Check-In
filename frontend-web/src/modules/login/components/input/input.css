@@ -1,0 +1,15 @@
+.input-error {
+    color: red;
+    border: 1px solid red;
+    background: #f5f5dc;
+}
+
+.regular-style {
+    color: green;
+}
+
+.input-container {
+    padding: 10px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
