@@ -1,8 +1,8 @@
-import Reserva from '../../modelos/reserva.js'
+import Reserva from '../../negocio/modelos/reserva.js'
 
 function crearDbReservas(db) {
 
-  const dbReservas = db.collection('Huespedes')
+  const dbReservas = db.collection('Reservas')
 
   return {
     add: async (reserva) => {

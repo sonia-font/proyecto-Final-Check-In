@@ -1,8 +1,8 @@
 import express from 'express'
-import ServicioEmpleados from '../servicios/servicioEmpleados.js'
-import ServicioHoteles from '../servicios/servicioHoteles.js'
-import ServicioHuespedes from '../servicios/servicioHuespedes.js'
-import ServicioReservas from '../servicios/servicioReservas.js'
+import ServicioEmpleados from '../negocio/servicios/servicioEmpleados.js'
+import ServicioHoteles from '../negocio/servicios/servicioHoteles.js'
+import ServicioHuespedes from '../negocio/servicios/servicioHuespedes.js'
+import ServicioReservas from '../negocio/servicios/servicioReservas.js'
 
 
 class Router {
@@ -32,8 +32,8 @@ class Router {
         //         res.status(201).send({msg: 'Recipe Uploaded!'})
         //     } catch(error) {
         //         next(error)
-        //     }            
-        // });        
+        //     }
+        // });
 
         // recipeRouter.post('/recipes/:idUser/weekPlan',async (req, res, next) =>{
         //     try {

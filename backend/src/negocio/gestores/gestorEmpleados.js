@@ -1,10 +1,9 @@
-import Empleado from '../modelos/empleado.js'
+import dbFactory from '../../persistencia/dbFactory.js'
 
 class GestorEmpleados {
 
-    constructor(baseEmpleados) {
-        this.empleados = baseEmpleados
-        //this.addTestData()
+    constructor() {
+        this.empleados = dbFactory.getBaseEmpleados()
     }
 
     async add(empleado) {
@@ -21,14 +20,6 @@ class GestorEmpleados {
 
     async delete(id) {
         await this.empleados.delete(id)
-    }
-
-    async addTestData() {
-        const self = this
-                
-        // self.add(new Empleado({
-        //     ...
-        // }))
     }
 }
 

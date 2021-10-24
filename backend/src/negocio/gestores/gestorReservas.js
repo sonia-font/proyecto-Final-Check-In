@@ -1,10 +1,9 @@
-import Reserva from '../modelos/reserva.js'
+import dbFactory from '../../persistencia/dbFactory.js'
 
 class GestorReservas {
 
-    constructor(baseReservas) {
-        this.reservas = baseReservas
-        //this.addTestData()
+    constructor() {
+        this.reservas = dbFactory.getBaseReservas()
     }
 
     async add(reserva) {
@@ -21,14 +20,6 @@ class GestorReservas {
 
     async delete(codigo) {
         await this.reservas.delete(codigo)
-    }
-
-    async addTestData() {
-        const self = this
-                
-        // self.add(new Reserva({
-        //     ...
-        // }))
     }
 }
 

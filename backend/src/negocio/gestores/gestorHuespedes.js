@@ -1,10 +1,9 @@
-import Huesped from '../modelos/huesped.js'
+import dbFactory from '../../persistencia/dbFactory.js'
 
 class GestorHuespedes {
 
-    constructor(baseHuespedes) {
-        this.huespedes = baseHuespedes
-        //this.addTestData()
+    constructor() {
+        this.huespedes = dbFactory.getBaseHuespedes()
     }
 
     async add(huesped) {
@@ -21,14 +20,6 @@ class GestorHuespedes {
 
     async delete(id) {
         await this.huespedes.delete(id)
-    }
-
-    async addTestData() {
-        const self = this
-                
-        // self.add(new Huesped({
-        //     ...
-        // }))
     }
 }
 

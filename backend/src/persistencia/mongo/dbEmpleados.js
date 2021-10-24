@@ -1,4 +1,4 @@
-import Empleado from '../../modelos/empleado.js'
+import Empleado from '../../negocio/modelos/empleado.js'
 
 function crearDbEmpleados(db) {
 

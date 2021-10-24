@@ -1,10 +1,9 @@
-import Hotel from '../modelos/hotel.js'
+import dbFactory from '../../persistencia/dbFactory.js'
 
 class GestorHoteles {
 
-    constructor(baseHoteles) {
-        this.hoteles = baseHoteles
-        //this.addTestData()
+    constructor() {
+        this.hoteles = dbFactory.getBaseHoteles() 
     }
 
     async add(hotel) {
@@ -21,14 +20,6 @@ class GestorHoteles {
 
     async delete(id) {
         await this.hoteles.delete(id)
-    }
-
-    async addTestData() {
-        const self = this
-                
-        // self.add(new Hotel({
-        //     ...
-        // }))
     }
 }
 

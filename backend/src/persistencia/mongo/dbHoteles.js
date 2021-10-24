@@ -1,4 +1,4 @@
-import Hotel from '../../modelos/hotel.js'
+import Hotel from '../../negocio/modelos/hotel.js'
 
 function crearDbHoteles(db) {
 
