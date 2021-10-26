@@ -1,4 +1,4 @@
-import Huesped from '../../modelos/huesped.js'
+import Huesped from '../../negocio/modelos/huesped.js'
 
 function crearDbHuespedes(db) {
 

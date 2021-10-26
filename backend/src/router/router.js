@@ -1,21 +1,27 @@
 import express from 'express'
-import ServicioEmpleados from '../negocio/servicios/servicioEmpleados.js'
-import ServicioHoteles from '../negocio/servicios/servicioHoteles.js'
-import ServicioHuespedes from '../negocio/servicios/servicioHuespedes.js'
-import ServicioReservas from '../negocio/servicios/servicioReservas.js'
+import ServicioEmpleados from '../servicios/servicioEmpleados.js'
+import ServicioHoteles from '../servicios/servicioHoteles.js'
+import ServicioHuespedes from '../servicios/servicioHuespedes.js'
+import ServicioReservas from '../servicios/servicioReservas.js'
 
 
 class Router {
 
     constructor(){
-        this.servicioEmpleados = new ServicioEmpleados()
-        this.servicioHoteles = new ServicioHoteles()
-        this.servicioHuespedes = new ServicioHuespedes()
-        this.servicioReservas = new ServicioReservas()
+        this.servEmpleados = new ServicioEmpleados()
+        this.servHuespedes = new ServicioHuespedes()
+        this.servReservas = new ServicioReservas()
+        this.servHoteles = new ServicioHoteles()
+
+        this.servHuespedes.popularBD()
+        this.servEmpleados.popularBD()
+        this.servReservas.popularBD(this.servHuespedes)
+        this.servHoteles.popularBD(this.servEmpleados,this.servReservas)
     }
 
     createRouter(){
         const router = express.Router()
+
 
         // recipeRouter.get('/recipes', async (req, res, next) => {
         //     try {

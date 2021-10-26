@@ -23,6 +23,7 @@ switch (getMode()) {
         const dbName = getDBname()
         const mongoClient = crearMongoClient(cnxStr,dbName)
         const db = await mongoClient.connect()
+        await db.dropDatabase()
         const DbEmpleados = crearDbEmpleados(db)
         _empleados = DbEmpleados
         const DbHoteles = crearDbHoteles(db)

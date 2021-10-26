@@ -6,7 +6,7 @@ class Huesped {
         this.apellido = data.apellido
         this.email = data.email
         this.foto = data.foto
-        this.id = nextId++   
+        this.id = nextId++
     }
 }
 
