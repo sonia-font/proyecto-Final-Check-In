@@ -23,6 +23,16 @@ class CacheReservas {
     async cerrar() {
         return console.log('cerrando gestor de reservas en cache')
     }
+
+    async updateById (reserva) {
+        const indiceParaReemplazar = this.reservas.findIndex(h => h.id == reserva.codigo)
+        if(indiceParaReemplazar == -1){
+            return {updated: 0}
+        }else{
+            await dbHuespedes.splice(indiceParaReemplazar, 1, reserva)
+            return {updated: 1}
+        }
+    }
 }
 
 export default CacheReservas

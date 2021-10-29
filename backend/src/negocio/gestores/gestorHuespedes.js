@@ -21,6 +21,10 @@ class GestorHuespedes {
     async delete(id) {
         await this.huespedes.delete(id)
     }
+
+    async updateById(huesped) {
+        await this.huespedes.updateById(huesped)
+    }
 }
 
 export default GestorHuespedes

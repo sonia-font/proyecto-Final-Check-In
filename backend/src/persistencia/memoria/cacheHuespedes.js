@@ -23,6 +23,17 @@ class CacheHuespedes {
     async cerrar() {
         return console.log('cerrando gestor de huespedes en cache')
     }
+
+    async updateById (huesped) {
+        const indiceParaReemplazar =  this.huespedes.findIndex(h => h.id == huesped.id)
+        if(indiceParaReemplazar == -1){
+            return {updated: 0}
+        }else{
+            await dbHuespedes.splice(indiceParaReemplazar, 1, huesped)
+            return {updated: 1}
+        }
+    }
+
 }
 
 export default CacheHuespedes
