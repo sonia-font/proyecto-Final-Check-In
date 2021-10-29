@@ -21,6 +21,10 @@ class GestorReservas {
     async delete(codigo) {
         await this.reservas.delete(codigo)
     }
+    
+    async updateById(reserva) {
+        await this.reservas.updateById(reserva)
+    }
 }
 
 export default GestorReservas
