@@ -1,7 +1,6 @@
 class EstadoCompleto {    
 
-    constructor(estado){
-        this.estado = estado
+    constructor(){
     }    
 
     async iniciar(){

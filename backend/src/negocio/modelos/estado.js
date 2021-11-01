@@ -2,8 +2,8 @@ import EstadoInactivo from "./estados/inactivo.js";
 
 class Estado {    
     constructor(){
-        this.estadoActual = new EstadoInactivo(this)
-    }    
+        this.estadoActual = new EstadoInactivo()
+    }
 
     async iniciar(){
         this.estadoActual.iniciar();

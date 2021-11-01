@@ -1,7 +1,6 @@
 class EstadoCancelado {    
 
-    constructor(estado){
-        this.estado = estado
+    constructor(){
     }    
 
     async iniciar(){

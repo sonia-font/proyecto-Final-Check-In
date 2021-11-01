@@ -1,7 +1,6 @@
 class EstadoPago {    
 
-    constructor(estado){
-        this.estado = estado
+    constructor(){
     }    
 
     async iniciar(){

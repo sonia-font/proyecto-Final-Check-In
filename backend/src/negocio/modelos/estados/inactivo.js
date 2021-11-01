@@ -1,8 +1,7 @@
 class EstadoInactivo {    
 
-    constructor(estado){
-        this.estado = estado
-    }    
+    constructor(){
+    }
 
     async iniciar(){
         //que hace?

@@ -13,20 +13,46 @@ class Router {
         this.servHuespedes = new ServicioHuespedes()
         this.servReservas = new ServicioReservas()
         this.servHoteles = new ServicioHoteles()
-
-        this.servHuespedes.popularBD()
-        this.servEmpleados.popularBD()
-        this.servReservas.popularBD(this.servHuespedes)
-        this.servHoteles.popularBD(this.servEmpleados,this.servReservas)
     }
 
     createRouter(){
         const router = express.Router()
 
+        router.post('/crear/empleado', async(req, res, next) => {
+            try {
+                await this.servEmpleados.empleadosManager.add(req.body)
+                res.status(200).send({msg: "Enviado"})
+            } catch(error) {
+                next(error)
+            }
+        });
+        
+        router.post('/crear/huesped', async(req, res, next) => {
+            try {
+                await this.servHuespedes.huespedesManager.add(req.body)
+                res.status(200).send({msg: "Enviado"})
+            } catch(error) {
+                next(error)
+            }
+        });
 
-        router.post('/crear/reserva', async(req, res, next) => {
+        router.post('/crear/reservation', async(req, res, next) => {
+            try {
+                await this.servReservas.reservasManager.add(req.body)
+                res.status(200).send({msg: "Enviado"})
+            } catch(error) {
+                next(error)
+            }
+        });
 
-        })
+        router.post('/crear/hotel', async(req, res, next) => {
+            try {
+                await this.servHoteles.hotelesManager.add(req.body)
+                res.status(200).send({msg: "Enviado"})
+            } catch(error) {
+                next(error)
+            }
+        });
 
         router.post('/usuario/guardar/foto', async(req, res, next) => {
 
