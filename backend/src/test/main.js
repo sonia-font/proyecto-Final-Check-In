@@ -5,7 +5,6 @@ import Empleado from '../negocio/modelos/empleado.js'
 import Reserva from '../negocio/modelos/reserva.js'
 import Hotel from '../negocio/modelos/hotel.js'
 import Estado from '../negocio/modelos/estado.js'
-import {toJSON} from 'flatted';
 
 async function main(){
     let server = await new Server().crearServidor(8002)
