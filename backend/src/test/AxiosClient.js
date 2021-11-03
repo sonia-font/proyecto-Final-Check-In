@@ -18,7 +18,7 @@ class AxiosClient {
 
     async addReserva(reserva) {   
         var self = this
-        return await self.sendRequest({ url: this.url + '/crear/reservation', method: 'post', data: reserva  })
+        return await self.sendRequest({ url: this.url + '/crear/reserva', method: 'post', data: reserva  })
     }
 
     async addHotel(hotel) {   
