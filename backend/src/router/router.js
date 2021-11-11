@@ -54,12 +54,19 @@ class Router {
             }
         });
 
-        router.post('/usuario/guardar/foto', async(req, res, next) => {
+        router.post('/huesped/guardar/foto', async(req, res, next) => {
 
         })
 
-        router.get('/usuario/obtener/{reserva_id}', async(req, res, next) => {
+        router.get('/huesped/obtener/:reservaId', async(req, res, next) => {
+            try {
+                const reservaId = req.params.reservaId;
+                const reserva = await this.servReservas.getByCode(reservaId);
 
+                res.status(200).send(reserva.huesped);
+            } catch(error) {
+                next(error)
+            }
         })
 
         router.post('/email/enviar', async (req, res, next) => {
@@ -95,86 +102,89 @@ class Router {
             }
         });
        
-        router.post('/user/validacion', async (req, res, next) => {
+        router.post('/huesped/validacion', async (req, res, next) => {
             try {
-                const cod_reserva = req.query.cod_reservation;
-                const nombre  = req.query.name;
-                const apellido = req.query.last_name;
+                const cod_reserva = req.body.cod_reservation;
+                const nombre  = req.body.name;
+                const apellido = req.body.last_name;
 
-                const reserva = this.servReservas.reservasManager.getByCode(cod_reserva);
-                const usuario = this.servHuespedes.huespedesManager.getById(reserva.huesped);
-
-                if(usuario != null && usuario.nombre == nombre && usuario.apellido == apellido) {
+                const reserva = await this.servReservas.getByCode(cod_reserva);
+                
+                if(reserva != null && reserva.huesped.nombre == nombre && reserva.huesped.apellido == apellido) {
                     res.status(200).send({'msg': 'Exito'});
                 }
-                res.status(400),send({'msg': 'No encontrado'});
+                res.status(400).send({'msg': 'No encontrado'});
             } catch(error) {
-                res.status(500),send({'msg': 'Error servidor'});
+                res.status(500).send({'msg': 'Error servidor'});
                 next(error)
             }            
         });
 
-        router.put('/actualizar/usuario',async (req, res, next) =>{
+        router.put('/actualizar/huesped/:id',async (req, res, next) =>{
             try {
-                const usuario_id = req.params.id;
-                const nombre = req.query.name;
-                const apellido  = req.query.last_name;
-                const tipo_documento = req.query.document_type;
-                const documento = req.query.document;
-                const email = req.query.email;
-                const foto_perfil = req.query.profile_picture;
+                
+                const huespedId = req.params.id;
+                const huesped = await this.servHuespedes.getById(huespedId);
 
-                let usuario = {}
-                usuario.id = usuario_id
-                usuario.nombre = nombre
-                usuario.apellido = apellido
-                usuario.tipo_documento = tipo_documento
-                usuario.documento = documento
-                usuario.email = email
-                usuario.foto_perfil = foto_perfil
+                if(huesped != null) {
+                    huesped.id = huespedId;
+                    huesped.nombre = req.body.name ? req.body.name : huesped.nombre;
+                    huesped.apellido  = req.body.last_name ? req.body.last_name : huesped.apellido;
+                    huesped.email = req.body.email ? req.body.email : huesped.email;
+                    
+                    //faltan en bbdd
+                    // huesped.foto_perfil = req.query.profile_picture != "" ? req.query.profile_picture : huesped.profile_picture ;
+                    // huesped.tipo_documento = req.query.document_type != "" ? req.query.document_type : huesped.document_type ;
+                    // huesped.documento = req.query.document != "" ? req.query.document : huesped.document ;
 
-                const respuesta = await this.servHuespedes.huespedesManager.updateById(usuario)
-
-                if(respuesta.update != 1){
-                    res.status(400)
+                    const respuesta = await this.servHuespedes.updateById(huesped)
+                    // se tiene que actualizar el huesped de la reserva
+               
+                    if(respuesta){
+                        res.status(200).send({"msg": "actualizado"})
+                    }else{
+                        res.status(400).send({"msg": "error"})
+                    }
                 }
                 
-                res.status(200)
-
             } catch(error) {
                 res.status(500).send({'msg': 'Error Servidor'})
                 next(error)
             }         
         })
 
-        router.delete('/borrar/user',async (req, res, next) =>{
+        router.delete('/borrar/huesped/:id',async (req, res, next) =>{
             try {
-                const id = req.params.user_id;
-
-                this.servHuespedes.huespedesManager.delete(id);     
-                res.status(200)
+                const id = req.params.id;
+                const respuesta = await this.servHuespedes.deleteById(id); 
+                if(respuesta) {
+                    res.status(200).send({"msg": "borrado con exito"})
+                } else {
+                    res.status(400).send({"msg": "error"})
+                }
+                
             } catch(error) {
                 res.status(500).send({'msg': 'Error Servidor'})
                 next(error)
             }         
         })
 
-        router.put('/actualizar/reserva',async (req, res, next) =>{
+        router.put('/actualizar/reserva/:codigo',async (req, res, next) =>{
             try {
-                const cod_reserva = req.query.cod_reservation;
-                const habitacion  = req.query.room;
-                
-                let reserva = {}
-                reserva.codigo = cod_reserva
-                reserva.habitacion = habitacion
-                
-                const respuesta = await this.servReservas.reservasManager.updateById(reserva);
+                const codigo = req.params.codigo;
+                const reserva = this.servReservas.getByCode(codigo);
 
-                if(respuesta.update != 1){
-                    res.status(400)
+                if(reserva != null) {
+                    reserva.codigo = codigo 
+                    reserva.habitacion = req.query.room != "" ? req.query.room : reserva.habitacion;
+                   
+                    const respuesta = await this.servReservas.updateById(huesped);
+
+                    if(respuesta == 1){
+                        res.status(200)
+                    }
                 }
-                
-                res.status(200)
+                res.status(400)
             } catch(error) {
                 next(error)
             }         

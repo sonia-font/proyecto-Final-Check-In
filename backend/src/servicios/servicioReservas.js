@@ -8,6 +8,14 @@ class ServicioReservas {
         this.reservasManager = new GestorReservas()
 
     }
+
+    async getByCode(id) {
+        return this.reservasManager.getByCode(id);
+    }
+
+    async updateById(reserva) {
+        return  await this.reservasManager.updateById(reserva);
+    }
 }
 
 export default ServicioReservas

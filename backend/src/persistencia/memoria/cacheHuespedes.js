@@ -16,8 +16,8 @@ class CacheHuespedes {
         return this.huespedes.find((huesped) => huesped.id == id)
     }
 
-    async delete(id) {
-        this.huespedes.delete((huesped) => huesped.id == id)
+    async deleteById(id) {
+        return this.huespedes.delete((huesped) => huesped.id == id)
     }
     
     async cerrar() {
@@ -27,10 +27,10 @@ class CacheHuespedes {
     async updateById (huesped) {
         const indiceParaReemplazar =  this.huespedes.findIndex(h => h.id == huesped.id)
         if(indiceParaReemplazar == -1){
-            return {updated: 0}
+            return false
         }else{
             await dbHuespedes.splice(indiceParaReemplazar, 1, huesped)
-            return {updated: 1}
+            return true
         }
     }
 

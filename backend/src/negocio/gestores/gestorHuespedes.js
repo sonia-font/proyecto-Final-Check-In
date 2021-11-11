@@ -18,12 +18,12 @@ class GestorHuespedes {
         return await this.huespedes.getById(id)
     }
 
-    async delete(id) {
-        await this.huespedes.delete(id)
+    async deleteById(id) {
+        return await this.huespedes.deleteById(id)
     }
 
     async updateById(huesped) {
-        await this.huespedes.updateById(huesped)
+        return await this.huespedes.updateById(huesped)
     }
 }
 
