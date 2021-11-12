@@ -31,21 +31,23 @@ function crearDbHuespedes(db) {
         return await dbHuespedes.findOne({id:parseInt(id)})
     },    
     deleteById: async (id) => {
-        const indiceParaBorrar = dbHuespedes.findIndex(h => h.id == id)
-        if (indiceParaBorrar == -1) {
-            return {deleted: 0}                
+        const huesped = await dbHuespedes.findOne({id:parseInt(id)});
+        
+        if (huesped == undefined) {
+            return false                
         }else{
-            await dbHuespedes.splice(indiceParaBorrar, 1)
-            return {deleted: 1}
+            const respuesta = await dbHuespedes.deleteOne({"id":parseInt(id)});
+            return true
         }
     },
     updateById: async (huesped) => {
-        const indiceParaReemplazar = dbHuespedes.findIndex(h => h.id == huesped.id)
-        if(indiceParaReemplazar == -1){
-            return {updated: 0}
+        const huespedEncontrado = await dbHuespedes.findOne({id:parseInt(huesped.id)})
+        if(huespedEncontrado == undefined){
+            return false
         }else{
-            await dbHuespedes.splice(indiceParaReemplazar, 1, huesped)
-            return {updated: 1}
+            const huespedId = huespedEncontrado.id;
+            await dbHuespedes.updateOne({"id": huespedId},{ $set: huesped}, {upsert: false})
+            return true
         }
     },
     cerrar: async () => {

@@ -28,7 +28,7 @@ function crearDbReservas(db) {
         return reservas
       },
     getById: async (codigo) => {
-        return await dbReservas.findOne({codigo:parseInt(codigo)})
+        return await dbReservas.findOne({codigo: parseInt(codigo)})
     },    
     deleteById: async (codigo) => {
         const indiceParaBorrar = dbReservas.findIndex(r => r.codigo == codigo)

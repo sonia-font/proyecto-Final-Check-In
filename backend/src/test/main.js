@@ -7,7 +7,7 @@ import Hotel from '../negocio/modelos/hotel.js'
 import Estado from '../negocio/modelos/estado.js'
 
 async function main(){
-    let server = await new Server().crearServidor(8002)
+    let server = await new Server().crearServidor(8000)
     let client = new AxiosClient(`http://localhost:${server.port}/api`)
 
     const empleado1 = new Empleado({
