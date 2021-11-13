@@ -18,6 +18,10 @@ class GestorEmpleados {
         return await this.empleados.getById(id)
     }
 
+    async getByEmail(email) {
+        return await this.empleados.getByEmail(email)
+    }
+
     async delete(id) {
         await this.empleados.delete(id)
     }

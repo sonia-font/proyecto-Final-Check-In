@@ -29,7 +29,10 @@ function crearDbEmpleados(db) {
       },
     getById: async (id) => {
         return await dbEmpleados.findOne({id:parseInt(id)})
-    },    
+    },   
+    getByEmail: async (email) => {
+        return await dbEmpleados.findOne({email:email})
+    }, 
     deleteById: async (id) => {
         const indiceParaBorrar = dbEmpleados.findIndex(e => e.id == id)
         if (indiceParaBorrar == -1) {

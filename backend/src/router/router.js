@@ -1,9 +1,11 @@
 import express from 'express'
-import Reserva from '../negocio/modelos/reserva.js'
 import ServicioEmpleados from '../servicios/servicioEmpleados.js'
 import ServicioHoteles from '../servicios/servicioHoteles.js'
 import ServicioHuespedes from '../servicios/servicioHuespedes.js'
 import ServicioReservas from '../servicios/servicioReservas.js'
+import ParseService from '../shared/parser/parseService.js'
+import {crearMailer} from "../shared/mails/Factory_Mailer.js"
+import configMailer from "../shared/mails/config.js"
 
 
 class Router {
@@ -13,82 +15,77 @@ class Router {
         this.servHuespedes = new ServicioHuespedes()
         this.servReservas = new ServicioReservas()
         this.servHoteles = new ServicioHoteles()
+        this.parseService = new ParseService()        
     }
 
     createRouter(){
         const router = express.Router()
 
-        router.post('/crear/empleado', async(req, res, next) => {
+        // Recibe el id del hotel por parametro y nombre, apellido, email y password de un empleado por body. 
+        // Lo agrega al hotel correspondiente. 
+        router.post('/:idHotel/empleado/crear', async(req, res, next) => {
             try {
-                await this.servEmpleados.empleadosManager.add(req.body)
-                res.status(200).send({msg: "Enviado"})
-            } catch(error) {
-                next(error)
-            }
-        });
-        
-        router.post('/crear/huesped', async(req, res, next) => {
-            try {
-                await this.servHuespedes.huespedesManager.add(req.body)
-                res.status(200).send({msg: "Enviado"})
+                await this.servHoteles.agregarEmpleado(req.params.idHotel, req.body)
+                res.status(201).send({msg: "Empleado agregado exitosamente"})
             } catch(error) {
                 next(error)
             }
         });
 
-        router.post('/crear/reservation', async(req, res, next) => {
+        // Recibe el id del hotel por parametro, inicio y fin de la reserva y nombre, apellido y mail del huesped por el body. 
+        // La agrega al hotel correspondiente. 
+        router.post('/:idHotel/reserva/crear', async(req, res, next) => {
             try {
-                await this.servReservas.reservasManager.add(req.body)
-                res.status(200).send({msg: "Enviado"})
+                await this.servHoteles.agregarReserva(req.params.idHotel,req.body.reserva,req.body.huesped)
+                res.status(201).send({msg: "Reserva agregada exitosamente"})
             } catch(error) {
                 next(error)
             }
         });
 
-        router.post('/crear/hotel', async(req, res, next) => {
+        // Recibe nombre, coordenadas y template del hotel y lo agrega a la base de hoteles.
+        router.post('/hotel/crear', async(req, res, next) => {
             try {
-                await this.servHoteles.hotelesManager.add(req.body)
-                res.status(200).send({msg: "Enviado"})
+                await this.servHoteles.agregar(req.body)
+                res.status(201).send({msg: "Hotel creado exitosamente"})
             } catch(error) {
                 next(error)
             }
         });
 
-        router.post('/usuario/guardar/foto', async(req, res, next) => {
-
+        // Tiene que recibir un multipart/form-data con la foto(nombre y ubicacion)
+        router.post('/:codReserva/actualizar/foto', async(req, res, next) => {
+            try {
+                var fotoDir = this.parseService.parsePhoto(req)
+                await this.servHoteles.actualizarReserva(req.params.codReserva,fotoDir,null)
+                res.status(201).send({msg: "Foto guardada exitosamente"})
+            } catch(error) {
+                next(error)
+            }
         })
 
-        router.get('/usuario/obtener/{reserva_id}', async(req, res, next) => {
-
-        })
-
-        router.post('/email/enviar', async (req, res, next) => {
+        // Recibe un codigo de reserva y devuelve la reserva encontrada o 404 not found
+        router.get('/usuario/:codReserva', async(req, res, next) => {
             try {
-                const usuario_id = req.params.user_id;
-            
-                const template  = req.query.template;
-                const cod_reserva = req.query.cod_reservation;
-
-                //busca el template le pasa el codigo dfe reserva
-                //luego manda el template con el servicio de mail
-
-                res.status(200).send({msg: "Enviado"})
+                const reserva = await this.servHoteles.buscarReserva(req.params.codReserva)
+                if(reserva !== null){
+                    res.status(200).json(reserva)
+                }else{
+                    res.status(404).send({msg: "Reserva no encontrada"})
+                }                
             } catch(error) {
                 next(error)
             }
-        });
+        })
 
-
-        router.post('/email/enviar/info', async (req, res, next) => {
+        // Recibe el id del hotel por parametro para buscar el template y el mail del huesped por el body.
+        router.post('/:idHotel/email/enviar', async (req, res, next) => {
             try {
-                const usuario_id = req.params.user_id;
-            
-                const template  = req.query.template;
-                const room = req.query.room;
-
-                //busca el template le pasa el codigo dfe reserva
-                //luego manda el template con el servicio de mail
-
+                var hotel = this.servHoteles.buscarPorId(req.params.idHotel)
+                var config = configMailer.infoTemplate
+                config.dirEmailBody = hotel.template
+                var mailer = crearMailer(config)  
+                await mailer.send(req.body.email, recipeList)
                 res.status(200).send({msg: "Enviado"})
             } catch(error) {
                 next(error)
@@ -159,22 +156,11 @@ class Router {
             }         
         })
 
-        router.put('/actualizar/reserva',async (req, res, next) =>{
+        // Recibe el codigo de reserva y el numero de habitacion por parametro y actualiza la reserva 
+        router.put('/:codReserva/actualizar/:numHabitacion',async (req, res, next) =>{
             try {
-                const cod_reserva = req.query.cod_reservation;
-                const habitacion  = req.query.room;
-                
-                let reserva = {}
-                reserva.codigo = cod_reserva
-                reserva.habitacion = habitacion
-                
-                const respuesta = await this.servReservas.reservasManager.updateById(reserva);
-
-                if(respuesta.update != 1){
-                    res.status(400)
-                }
-                
-                res.status(200)
+                await this.servHoteles.actualizarReserva(req.params.codReserva,null,req.params.numHabitacion)
+                res.status(201).send({msg: "Habitacion actualizada exitosamente"})
             } catch(error) {
                 next(error)
             }         

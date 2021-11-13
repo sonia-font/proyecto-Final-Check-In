@@ -29,7 +29,7 @@ class CacheReservas {
         if(indiceParaReemplazar == -1){
             return {updated: 0}
         }else{
-            await dbHuespedes.splice(indiceParaReemplazar, 1, reserva)
+            await this.reservas.splice(indiceParaReemplazar, 1, reserva)
             return {updated: 1}
         }
     }

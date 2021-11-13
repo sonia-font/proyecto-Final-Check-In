@@ -22,7 +22,7 @@ class GestorReservas {
         await this.reservas.delete(codigo)
     }
     
-    async updateById(reserva) {
+    async updateByCode(reserva) {
         await this.reservas.updateById(reserva)
     }
 }

@@ -16,6 +16,10 @@ class CacheEmpleados {
         return this.empleados.find((empleado) => empleado.id == id)
     }
 
+    async getByEmail(email) {
+        return this.empleados.find((empleado) => empleado.email == email)
+    }
+
     async delete(id) {
         this.empleados.delete((empleado) => empleado.id == id)
     }
