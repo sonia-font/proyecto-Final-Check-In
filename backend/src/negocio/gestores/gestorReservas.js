@@ -23,7 +23,7 @@ class GestorReservas {
     }
     
     async updateByCode(reserva) {
-        await this.reservas.updateById(reserva)
+       return await this.reservas.updateById(reserva)
     }
 }
 
