@@ -4,7 +4,7 @@ import formidable from 'formidable'
 
 class ParseService {    
 
-    async parsePhoto(req){
+    async parseForm(req){
         var self = this
         return new Promise((resolve, reject) => {
             try {
@@ -17,7 +17,13 @@ class ParseService {
             
                     self.uploadImage(newPath, rawData)  
 
-                    resolve(newPath)
+                    var datos = {
+                        tipo: fields.tipo,
+                        documento: fields.documento,
+                        foto: newPath
+                    } 
+                    
+                    resolve(datos)
                 })
             } catch (err) {
                 reject(new Error('Error al subir la foto'))

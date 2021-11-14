@@ -1,18 +1,8 @@
-import EstadoInactivo from "./estados/inactivo.js";
-
-class Estado {    
-    constructor(){
-        this.estadoActual = new EstadoInactivo()
-    }
-
-    async iniciar(){
-        this.estadoActual.iniciar();
-    }
-
-    async cambiar(nuevoEstado){
-        this.estadoActual = nuevoEstado;
-        this.iniciar()
-    }     
+const estado = {
+	INACTIVO: "inactivo",
+	INICIADO: "iniciado",
+	COMPLETO: "completo",
+	FINALIZADO: "finalizado",
 }
 
-export default Estado
+export default estado

@@ -16,16 +16,9 @@ class ServicioHoteles {
     * @param  {Hotel} hotel El hotel a agregar
     */
     async agregar(hotel) {
-        try{
-            var nuevoHotel = new Hotel()
-            nuevoHotel.nombre = hotel.nombre
-            nuevoHotel.coordenada = hotel.coordenada
-            nuevoHotel.template = hotel.template
-            nuevoHotel.empleados = []
-            nuevoHotel.reservas = []
-    
-            await this.hotelesManager.add(nuevoHotel)
-        } catch {
+        try{    
+            await this.hotelesManager.add(hotel)
+        } catch (er) {
             throw new Error("No se pudo agregar al hotel. Posiblemente falten datos. ")
         }          
     }
@@ -46,81 +39,17 @@ class ServicioHoteles {
     }
 
     /**
-    * Devuelve una reserva por codigo
-    * @param  {Number} codigo El codigo de la reserva a buscar
+    * Devuelve un listado con nombre y id de todos los hoteles
     */
-     async buscarReserva(codigo) {
-        var hoteles = await this.buscarTodos()
-        var reservaEncontrada = null
-        var index = 0
-        if(hoteles.length > 0){
-            do{
-                var subindex = 0
-                const hotel = hoteles[index]
-                if(hotel.reservas > 0){
-                    do{
-                        const reserva = hotel.reservas[subindex]
-                        if(reserva.codigo == codigo){
-                            reservaEncontrada = reserva
-                        }
-                        subindex++
-                    } while (subindex < hotel.reservas.length)
-                }
-                index++
-            } while (index < hoteles.length)
-        }
-        return reservaEncontrada
-    }
+    async listar() {
+        var hoteles = await this.hotelesManager.getAll()
+        var listado = []
 
-    /**
-    * Agrega un empleado al hotel por id
-    * @param  {Number} id El id del hotel a buscar
-    * @param  {Empleado} empleado El nuevo empleado a agregar
-    */
-     async agregarEmpleado(id, empleado) {
-        try{
-            var nuevoEmpleado = new Empleado()
-            nuevoEmpleado.nombre = empleado.nombre
-            nuevoEmpleado.apellido = empleado.apellido
-            nuevoEmpleado.email = empleado.email
-            nuevoEmpleado.password = empleado.password
+        hoteles.forEach(hotel => {
+            listado.push({id: hotel.id, nombre: hotel.nombre})
+        });
 
-            var hotel = await this.hotelesManager.getById(id)
-            hotel.empleados.push(nuevoEmpleado)
-            await this.hotelesManager.updateById(hotel)
-        }catch{
-            throw new Error("No se pudo agregar al empleado. Posiblemente falten datos. ")
-        }        
-    }
-
-    /**
-    * Agrega una reserva al hotel por id
-    * @param  {Number} id El id del hotel a buscar
-    * @param  {Reserva} reserva La nueva reserva a agregar
-    * @param  {Huesped} huesped El huesped de la reserva
-    */
-    async agregarReserva(id, reserva, huesped) {
-        try{
-            var nuevaReserva = new Reserva()
-            nuevaReserva.inicio = reserva.inicio
-            nuevaReserva.fin = reserva.fin
-            nuevaReserva.habitacion = null
-            nuevaReserva.estado = new Estado()            
-
-            var nuevoHuesped = new Huesped()
-            nuevoHuesped.nombre = huesped.nombre
-            nuevoHuesped.apellido = huesped.apellido
-            nuevoHuesped.email = huesped.email
-            nuevoHuesped.foto = ""
-
-            nuevaReserva.huesped = nuevoHuesped
-
-            var hotel = await this.hotelesManager.getById(id)
-            hotel.reservas.push(nuevaReserva)
-            await this.hotelesManager.updateById(hotel)
-        }catch{
-            throw new Error("No se pudo agregar la reserva. Posiblemente falten datos. ")
-        } 
+        return listado
     }
 
     /**
@@ -132,43 +61,147 @@ class ServicioHoteles {
     }
 
     /**
-    * Devuelve una reserva actualizada
-    * @param  {Number} codigo El codigo de la reserva a buscar
-    * @param  {String} foto La foto del huesped
-    * @param  {Number} habitacion El numero de habitacion
+    * Agrega una reserva al hotel por id
+    * @param  {Number} id El id del hotel a buscar
+    * @param  {Reserva} reserva La nueva reserva a agregar
+    * @param  {Huesped} huesped El huesped de la reserva
     */
-    async actualizarReserva(codigo, foto, habitacion) {
-        var hoteles = await this.buscarTodos()
-        var reservaEncontrada = null        
+    async agregarReserva(id, reserva, huesped) {
+        try{
+            // TODO: Agregar un if que checkee si falta algun dato del huesped o la reserva  
+            var hotel = await this.hotelesManager.getById(id)
+            reserva.huesped = huesped
+            hotel.reservas.push(reserva)
+            await this.hotelesManager.updateById(hotel)
+        }catch{
+            throw new Error("No se pudo agregar la reserva. Posiblemente falten datos. ")
+        } 
+    }     
+
+    /**
+    * Devuelve una reserva por codigo
+    * @param  {Number} id El id del hotel a buscar
+    * @param  {Number} codigo El codigo de la reserva a buscar
+    */
+    async buscarReserva(id, codigo) {
+        var hotel = await this.buscarPorId(id)
+        var reservaEncontrada = null
         var index = 0
-        if(hoteles.length > 0){
-
+        if(hotel.reservas > 0){
             do{
-                var subindex = 0
-                const hotel = hoteles[index]
-                if(hotel.reservas > 0){
-
-                    do{
-                        const reserva = hotel.reservas[subindex]
-                        if(reserva.codigo == codigo){
-
-                            if(foto !== null){
-                                reserva.huesped.foto = foto
-                            } else if (habitacion !== null){
-                                reserva.habitacion = habitacion
-                            }
-
-                            this.hotelesManager.updateById(hotel)
-                            reservaEncontrada = reserva
-                        }
-                        subindex++
-                    } while (subindex < hotel.reservas.length && reservaEncontrada === null)
+                const reserva = hotel.reservas[index]
+                if(reserva.codigo === codigo){
+                    reservaEncontrada = reserva
                 }
                 index++
-            } while (index < hoteles.length && reservaEncontrada === null)
+            } while (index < hotel.reservas.length && reservaEncontrada === null)
         }
+        
+        return reservaEncontrada
+    } 
+
+    /**
+    * Devuelve una reserva actualizada
+    * @param  {Number} id El id del hotel a buscar
+    * @param  {Number} codigo El codigo de la reserva a buscar
+    * @param  {Estado} estado Enum del estado de la reserva
+    * @param  {String} foto La foto del huesped
+    * @param  {String} tipo El tipo de documento
+    * @param  {String} documento El numero de docuemnto
+    * @param  {Number} habitacion El numero de habitacion
+    */
+    async actualizarReserva(id, codigo, estado, foto, tipo, documento, habitacion) {
+        var hotel = await this.buscarPorId(id)
+        var reservaEncontrada = null        
+        var index = 0
+
+        if(hotel.reservas > 0){
+
+            do{
+                const reserva = hotel.reservas[index]
+                if(reserva.codigo === codigo){
+
+                    if(foto !== null){
+                        reserva.huesped.foto = foto
+                        reserva.huesped.tipo = tipo
+                        reserva.huesped.documento = documento
+                        reserva.estado = Estado.COMPLETO
+
+                    } else if (habitacion !== null){
+                        reserva.habitacion = habitacion
+
+                    } else if (estado !== null){
+                        reserva.estado = estado   
+
+                    }
+
+                    this.hotelesManager.updateById(hotel)
+                    reservaEncontrada = reserva
+                }
+                index++
+            } while (index < hotel.reservas.length && reservaEncontrada === null)
+        }        
 
         return reservaEncontrada
+    }
+    
+    /**
+    * Agrega un empleado al hotel por id
+    * @param  {Number} id El id del hotel a buscar
+    * @param  {Empleado} empleado El nuevo empleado a agregar
+    */
+    async agregarEmpleado(id, empleado) {
+        try{
+            // TODO: Agregar un if que checkee si falta algun dato del empleado  
+            var hotel = await this.hotelesManager.getById(id)
+            hotel.empleados.push(empleado)
+            await this.hotelesManager.updateById(hotel)
+        }catch{
+            throw new Error("No se pudo agregar al empleado. Posiblemente falten datos. ")
+        }        
+    }
+
+    /**
+    * Indica si el empleado esta autorizado o no a usar la aplicacion
+    * @param  {Number} id El id del hotel a buscar
+    * @param  {String} email El email del empleado
+    * @param  {String} password La password del empleado
+    */
+    async loginEmpleado(id, email, password){
+        var hotel = await this.buscarPorId(id)
+        var empleadoEncontrado = null
+        var index = 0
+        if(hotel.empleados > 0){
+            do{
+                const empleado = hotel.empleados[index]
+                if(empleado.email === email && empleado.password === password){
+                    empleadoEncontrado = empleado
+                    return true
+                }
+                index++
+            } while (index < hotel.empleados.length && empleadoEncontrado === null)
+        }
+        
+        return false
+    }
+
+    /**
+    * Indica si los datos del huesped coinciden con los de la reserva
+    * @param  {Number} id El id del hotel a buscar
+    * @param  {Number} codigo El codigo de la reserva a buscar
+    * @param  {String} email El email del empleado    
+    */
+     async validarHuesped(id, codigo, email){
+        var reserva = await this.buscarReserva(id, codigo)
+
+        if(reserva !== null){
+            if(reserva.huesped.email === email){
+                
+                return true
+            }
+        }
+        
+        return false
     }
 }
 
