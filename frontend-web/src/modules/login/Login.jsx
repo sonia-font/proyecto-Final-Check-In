@@ -1,47 +1,55 @@
 import React, {useEffect, useState} from "react";
-import Title from '../login/components/title/Title'
-import Label from '../login/components/label/Label'
+import Title from './components/title/Title'
+import Label from './components/label/Label'
 // import Input from '../login/components/input/Input'
-import Dropdown from '../login/components/dropdown/Dropdown'
-import '../login/login.css'
-
+import Dropdown from './components/dropdown/Dropdown'
+import '../login/login.scss'
+import { useHistory } from 'react-router-dom'
+import Background from '../../assets/img/11.jpg'
 const Login = () =>{
     const [userName, setUserName] = useState(null);
     const [password, setPassword] = useState(null);
     // const [userHotel,setUserHotel] = useState(null);
     const [passwordError, setPasswordError] = useState(false);
-    
+    const history = useHistory()
+
     const buttonLogin = () => {
         debugger
-    if (userName && password){
-        console.log("Username", userName)
-        console.log("password", password)
-
+    if (userName =="admin" && password=="admin1234"){
+        history.push("/home")
         // callLogin(userName, password);
     } else{
-        console.log("NADA")
+        console.log("Error de login")
         setPasswordError(true);
     }
   };
 
     return(
-        <div className='login-container'> 
+        <div style={{
+            width: "auto",
+            height: "80%",
+            backgroundImage: `url(${Background})`,
+            backgroundSize: "100%",
+            textAlign: "center",
+            fontSize: "30px",
+            color: "black"}} > 
             <Title className="title-container" />
             <Label text="Usuario"/>
             <input  style={{
                 padding: "10px",
-                marginBottom: "15px",
-                marginTop: "15px"}}
+                marginBottom: "2%",
+                marginTop: "2%"}}
                 onChange={(e) => setUserName(e.target.value)}
                 placeholder='Ingrese su usuario'
             />
             <Label text="Contraseña"/>
             <input  style={{
                 padding: "10px",
-                marginBottom: "15px",
-                marginTop: "15px"}}
+                marginBottom: "2%",
+                marginTop: "2%"}}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder='Ingrese su contraseña'
+                type="password"
             />
             <Label text="Seleccione su hotel"/>
             <Dropdown />
@@ -50,8 +58,8 @@ const Login = () =>{
                 padding: "10px",
                 backgroundColor: "transparent",
                 border: "2px solid  #50564f",
-                marginBottom: "40px",
-                marginTop: "40px",
+                marginBottom: "2%",
+                marginTop: "2%",
                 fontWeight: "bolder",
                 width:"200px",
                 height: "50px",
