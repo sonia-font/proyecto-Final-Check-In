@@ -23,6 +23,16 @@ class CacheHoteles {
     async cerrar() {
         return console.log('cerrando gestor de hoteles en cache')
     }
+
+    async updateById (hotel) {
+        const indiceParaReemplazar = this.hoteles.findIndex(h => h.id == hotel.id)
+        if(indiceParaReemplazar == -1){
+            return {updated: 0}
+        }else{
+            await this.hoteles.splice(indiceParaReemplazar, 1, hotel)
+            return {updated: 1}
+        }
+    }
 }
 
 export default CacheHoteles

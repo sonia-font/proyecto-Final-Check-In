@@ -21,6 +21,10 @@ class GestorHoteles {
     async delete(id) {
         await this.hoteles.delete(id)
     }
+
+    async updateById(hotel) {
+        await this.hoteles.updateById(hotel)
+    }
 }
 
 export default GestorHoteles

@@ -52,54 +52,47 @@ async function main(){
         inicio: new Date(2021,10,24),
         fin: new Date(2021,10,31),
         huesped: huesped1,
-        estado: new Estado(),
+        estado: Estado.INACTIVO,
     })
 
     const reserva2 = new Reserva({
         inicio: new Date(2021,10,23),
         fin: new Date(2021,10,30),
         huesped: huesped2,
-        estado: new Estado(),
+        estado: Estado.INACTIVO,
     })
 
     const reserva3 = new Reserva({
         inicio: new Date(2021,10,22),
         fin: new Date(2021,10,29),
         huesped: huesped3,
-        estado: new Estado(),
+        estado: Estado.INACTIVO,
     })
 
     const reserva4 = new Reserva({
         inicio: new Date(2021,10,21),
         fin: new Date(2021,10,28),
         huesped: huesped4,
-        estado: new Estado(),
+        estado: Estado.INACTIVO,
     })
 
     const dir = process.cwd()
     const empleados = [empleado1,empleado2]
     const reservas = [reserva1,reserva2,reserva3,reserva4]
 
-    const hotel1 = new Hotel({
+    const hotel = new Hotel({
         empleados: empleados,
         reservas: reservas,
         nombre: 'Hotel Test',
         template: dir + "/src/shared/mails/cuerposMail/templateHotel.html",
         coordenada: "-34.603619642973996, -58.381688419326416"
     })
-
     
-    await client.addEmpleado(empleado1)
-    await client.addEmpleado(empleado2)
-    await client.addHuesped(huesped1)
-    await client.addHuesped(huesped2)
-    await client.addHuesped(huesped3)
-    await client.addHuesped(huesped4)
-    await client.addReserva(reserva1)
-    await client.addReserva(reserva2)
-    await client.addReserva(reserva3)
-    await client.addReserva(reserva4)
-    await client.addHotel(hotel1)
+    const msg = await client.addHotel(hotel)
+    console.log(msg.data.msg)
+
+    const {data} = await client.getAll()
+    console.log(data[0])
 }
 
 main()

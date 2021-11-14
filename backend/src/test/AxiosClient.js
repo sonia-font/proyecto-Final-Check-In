@@ -6,25 +6,15 @@ class AxiosClient {
         this.url = serverData
     }
 
-    async addEmpleado(empleado) {   
-        var self = this
-        return await self.sendRequest({ url: this.url + '/crear/empleado', method: 'post', data: empleado })
-    }
-
-    async addHuesped(huesped) {
-        var self = this
-        return await self.sendRequest({ url: this.url + '/crear/huesped', method: 'post', data: huesped  })
-    }
-
-    async addReserva(reserva) {   
-        var self = this
-        return await self.sendRequest({ url: this.url + '/crear/reservation', method: 'post', data: reserva  })
-    }
-
     async addHotel(hotel) {   
         var self = this
-        return await self.sendRequest({ url: this.url + '/crear/hotel', method: 'post', data: hotel  })
-    }
+        return await self.sendRequest({ url: this.url + '/hotel/crear', method: 'post', data: hotel  })
+    }  
+
+    async getAll() {   
+        var self = this
+        return await self.sendRequest({ url: this.url + '/hoteles', method: 'get' })
+    }  
 
     async sendRequest(req) {
         try {
