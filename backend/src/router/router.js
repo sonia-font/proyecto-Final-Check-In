@@ -32,7 +32,7 @@ class Router {
         router.get('/hoteles', async(req, res, next) => {
             try {
                 const hoteles = await this.servHoteles.buscarTodos()
-                if(hoteles !== null){
+                if(hoteles.length > 0){
                     res.status(200).json(hoteles)
                 }else{
                     res.status(404).send({msg: "No hay hoteles para mostrar"})
@@ -47,7 +47,7 @@ class Router {
         router.get('/:idHotel', async(req, res, next) => {
             try {
                 const hotel = await this.servHoteles.buscarPorId(req.params.idHotel)
-                if(hotel !== null){
+                if(hotel){
                     res.status(200).json(hotel)
                 }else{
                     res.status(404).send({msg: "Hotel no encontrado"})
@@ -60,8 +60,8 @@ class Router {
         // Devuelve todos los hoteles
         router.get('/hoteles/lista', async(req, res, next) => {
             try {
-                const hoteles = await this.servHoteles.buscarTodos()
-                if(hoteles !== null){
+                const hoteles = await this.servHoteles.listar()
+                if(hoteles.length > 0){
                     res.status(200).json(hoteles)
                 }else{
                     res.status(404).send({msg: "No hay hoteles para mostrar"})
@@ -75,7 +75,6 @@ class Router {
         // Recibe el id del hotel por parametro
         router.delete('/:idHotel/borrar',async (req, res, next) =>{
             try {
-                // TODO: Que hace si no lo encuentra?
                 await this.servHoteles.borrar(req.params.idHotel); 
                 res.status(200).send({msg: "Hotel borrado exitosamente"})                
             } catch(error) {
@@ -90,7 +89,7 @@ class Router {
         // Recibe el id del hotel por parametro, inicio y fin de la reserva y nombre, apellido y mail del huesped por el body.         
         router.post('/:idHotel/reserva/crear', async(req, res, next) => {
             try {
-                await this.servHoteles.agregarReserva(req.params.idHotel,req.body.reserva,req.body.huesped)
+                await this.servHoteles.agregarReserva(req.params.idHotel,req.body)
                 res.status(201).send({msg: "Reserva agregada exitosamente"})
             } catch(error) {
                 next(error)
@@ -115,7 +114,7 @@ class Router {
         // Tiene que recibir un multipart/form-data con la foto, tipo y numero de documento
         router.put('/:idHotel/:codReserva/actualizar/foto', async(req, res, next) => {
             try {
-                var datos = this.parseService.parseForm(req)
+                var datos = await this.parseService.parseForm(req)
                 await this.servHoteles.actualizarReserva(req.params.idHotel, req.params.codReserva, null, datos.foto, datos.tipo, datos.documento, null)
                 res.status(201).send({msg: "Reserva actualizada"})
             } catch(error) {
@@ -154,7 +153,7 @@ class Router {
             try {
                 var ok = await this.servHoteles.loginEmpleado(req.params.idHotel, req.body.email, req.body.password)
                 if(ok){
-                    res.status(200)
+                    res.status(200).send({msg: "Bienvenido!"})
                 }else{
                     res.status(403).send({msg: "Error de login"})
                 }  
@@ -172,9 +171,24 @@ class Router {
             try {
                 var ok = await this.servHoteles.validarHuesped(req.params.idHotel, req.params.codReserva, req.body.email)
                 if(ok){
-                    res.status(200)
+                    res.status(200).send({msg: "Bienvenido!"})
                 }else{
                     res.status(403).send({msg: "Datos de reserva invalidos"})
+                }  
+            } catch(error) {
+                next(error)
+            }         
+        });
+
+        // Borrar datos huesped. 
+        // Recibe hotel y codigo de reserva por parametro  
+        router.delete('/:idHotel/:codReserva/huesped/borrar', async (req, res, next) => {
+            try {
+                var ok = await this.servHoteles.borrarHuesped(req.params.idHotel, req.params.codReserva)
+                if(ok){
+                    res.status(200).send({msg: "Datos del huesped eliminados"})
+                }else{
+                    res.status(404).send({msg: "Reserva no encontrada"})
                 }  
             } catch(error) {
                 next(error)

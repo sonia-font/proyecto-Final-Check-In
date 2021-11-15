@@ -2,7 +2,6 @@ import GestorHoteles from '../negocio/gestores/gestorHoteles.js'
 import Hotel from '../negocio/modelos/hotel.js'
 import Empleado from '../negocio/modelos/empleado.js'
 import Reserva from '../negocio/modelos/reserva.js'
-import Huesped from '../negocio/modelos/huesped.js'
 import Estado from '../negocio/modelos/estado.js'
 
 class ServicioHoteles {
@@ -63,14 +62,12 @@ class ServicioHoteles {
     /**
     * Agrega una reserva al hotel por id
     * @param  {Number} id El id del hotel a buscar
-    * @param  {Reserva} reserva La nueva reserva a agregar
-    * @param  {Huesped} huesped El huesped de la reserva
+    * @param  {Reserva} datos La nueva reserva a agregar
     */
-    async agregarReserva(id, reserva, huesped) {
-        try{
-            // TODO: Agregar un if que checkee si falta algun dato del huesped o la reserva  
+    async agregarReserva(id, datos) {
+        try{  
             var hotel = await this.hotelesManager.getById(id)
-            reserva.huesped = huesped
+            var reserva = new Reserva(datos)
             hotel.reservas.push(reserva)
             await this.hotelesManager.updateById(hotel)
         }catch{
@@ -87,10 +84,10 @@ class ServicioHoteles {
         var hotel = await this.buscarPorId(id)
         var reservaEncontrada = null
         var index = 0
-        if(hotel.reservas > 0){
+        if(hotel.reservas.length > 0){
             do{
                 const reserva = hotel.reservas[index]
-                if(reserva.codigo === codigo){
+                if(reserva.codigo == codigo){
                     reservaEncontrada = reserva
                 }
                 index++
@@ -115,11 +112,11 @@ class ServicioHoteles {
         var reservaEncontrada = null        
         var index = 0
 
-        if(hotel.reservas > 0){
+        if(hotel.reservas.length > 0){
 
             do{
                 const reserva = hotel.reservas[index]
-                if(reserva.codigo === codigo){
+                if(reserva.codigo == codigo){
 
                     if(foto !== null){
                         reserva.huesped.foto = foto
@@ -171,7 +168,7 @@ class ServicioHoteles {
         var hotel = await this.buscarPorId(id)
         var empleadoEncontrado = null
         var index = 0
-        if(hotel.empleados > 0){
+        if(hotel.empleados.length > 0){
             do{
                 const empleado = hotel.empleados[index]
                 if(empleado.email === email && empleado.password === password){
@@ -189,9 +186,9 @@ class ServicioHoteles {
     * Indica si los datos del huesped coinciden con los de la reserva
     * @param  {Number} id El id del hotel a buscar
     * @param  {Number} codigo El codigo de la reserva a buscar
-    * @param  {String} email El email del empleado    
+    * @param  {String} email El email del huesped    
     */
-     async validarHuesped(id, codigo, email){
+    async validarHuesped(id, codigo, email){
         var reserva = await this.buscarReserva(id, codigo)
 
         if(reserva !== null){
@@ -201,6 +198,23 @@ class ServicioHoteles {
             }
         }
         
+        return false
+    }
+
+    /**
+    * Borra los datos del huesped de la reserva
+    * @param  {Number} id El id del hotel a buscar
+    * @param  {Number} codigo El codigo de la reserva a buscar  
+    */
+     async borrarHuesped(id, codigo){
+        var reserva = await this.buscarReserva(id, codigo)
+
+        if(reserva !== null){
+            reserva.huesped = {}
+
+            return true
+        }
+
         return false
     }
 }

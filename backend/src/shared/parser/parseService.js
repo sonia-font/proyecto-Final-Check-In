@@ -11,8 +11,8 @@ class ParseService {
                 const form = new formidable.IncomingForm();
     
                 form.parse(req, function(err, fields, files){
-                    var oldPath = files.image.path;
-                    var newPath = path.join('./uploads') + '/'+files.image.name
+                    var oldPath = files.image.filepath;
+                    var newPath = path.join('./src/uploads') + '/'+files.image.originalFilename
                     var rawData = fs.readFileSync(oldPath)
             
                     self.uploadImage(newPath, rawData)  

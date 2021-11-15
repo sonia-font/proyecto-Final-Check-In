@@ -17,7 +17,13 @@ class CacheHoteles {
     }
 
     async delete(id) {
-        this.hoteles.delete((hotel) => hotel.id == id)
+        const indiceParaBorrar = this.hoteles.findIndex(h => h.id == id)
+        if (indiceParaBorrar == -1) {
+            return {deleted: 0}                
+        }else{
+            await this.hoteles.splice(indiceParaBorrar, 1)
+            return {deleted: 1}
+        }
     }
     
     async cerrar() {
