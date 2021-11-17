@@ -111,11 +111,12 @@ class ServicioHoteles {
         var hotel = await this.buscarPorId(id)
         var reservaEncontrada = null        
         var index = 0
-
+    
         if(hotel.reservas.length > 0){
 
             do{
                 const reserva = hotel.reservas[index]
+                
                 if(reserva.codigo == codigo){
 
                     if(foto !== null){
@@ -124,12 +125,15 @@ class ServicioHoteles {
                         reserva.huesped.documento = documento
                         reserva.estado = Estado.COMPLETO
 
-                    } else if (habitacion !== null){
+                    } 
+                    
+                    if (habitacion !== null){
                         reserva.habitacion = habitacion
 
-                    } else if (estado !== null){
+                    } 
+                    
+                    if (estado !== null){
                         reserva.estado = estado   
-
                     }
 
                     this.hotelesManager.updateById(hotel)
