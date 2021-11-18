@@ -40,11 +40,13 @@ function crearDbHoteles(db) {
         }
     },
     updateById: async (hotel) => {
-        const indiceParaReemplazar = dbHoteles.findIndex(h => h.id == hotel.id)
-        if(indiceParaReemplazar == -1){
+        const hotelActualizar = await dbHoteles.findOne({id: parseInt(hotel.id)})
+       
+        if(hotelActualizar == undefined){
             return {updated: 0}
         }else{
-            await dbHoteles.splice(indiceParaReemplazar, 1, hotel)
+            const indiceParaReemplazar = hotelActualizar.id
+            await dbHoteles.updateOne({"id" :indiceParaReemplazar},{ $set: hotel}, {upsert: false})
             return {updated: 1}
         }
     },
