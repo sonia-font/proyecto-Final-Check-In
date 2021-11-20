@@ -1,3 +1,5 @@
+import Estado from './estado.js'
+
 let nextId = 0
 
 class Reserva {    
@@ -5,9 +7,9 @@ class Reserva {
         this.inicio = data.inicio
         this.fin = data.fin
         this.huesped = data.huesped
-        this.estado = data.estado
-        this.habitacion = data.habitacion
-        this.codigo = nextId++   
+        this.estado = Estado.INACTIVO 
+        this.habitacion = null
+        this.codigo = nextId++     
     }
 }
 

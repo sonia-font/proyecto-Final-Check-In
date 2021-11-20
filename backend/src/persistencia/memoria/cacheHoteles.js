@@ -17,11 +17,27 @@ class CacheHoteles {
     }
 
     async delete(id) {
-        this.hoteles.delete((hotel) => hotel.id == id)
+        const indiceParaBorrar = this.hoteles.findIndex(h => h.id == id)
+        if (indiceParaBorrar == -1) {
+            return {deleted: 0}                
+        }else{
+            await this.hoteles.splice(indiceParaBorrar, 1)
+            return {deleted: 1}
+        }
     }
     
     async cerrar() {
         return console.log('cerrando gestor de hoteles en cache')
+    }
+
+    async updateById (hotel) {
+        const indiceParaReemplazar = this.hoteles.findIndex(h => h.id == hotel.id)
+        if(indiceParaReemplazar == -1){
+            return {updated: 0}
+        }else{
+            await this.hoteles.splice(indiceParaReemplazar, 1, hotel)
+            return {updated: 1}
+        }
     }
 }
 

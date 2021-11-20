@@ -1,13 +1,10 @@
-let nextId = 0
-
-class Huesped {    
+class Empleado {    
     constructor(data){
         this.nombre = data.nombre
         this.apellido = data.apellido
         this.email = data.email
-        this.foto = data.foto
-        this.id = nextId++   
+        this.password = data.password 
     }
 }
 
-export default Huesped
+export default Empleado
