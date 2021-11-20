@@ -1,69 +1,72 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import Title from './components/title/Title'
 import Label from './components/label/Label'
 // import Input from '../login/components/input/Input'
 import Dropdown from './components/dropdown/Dropdown'
 import '../login/login.scss'
 import { useHistory } from 'react-router-dom'
-import Background from '../../assets/img/11.jpg'
+import Background from '../../assets/img/loginImage.jpg'
+import { showAlertNotification } from '../../shared/AlertNotification/AlertNotification'
+
 const Login = () =>{
     const [userName, setUserName] = useState(null);
     const [password, setPassword] = useState(null);
     // const [userHotel,setUserHotel] = useState(null);
-    const [passwordError, setPasswordError] = useState(false);
     const history = useHistory()
 
     const buttonLogin = () => {
-        debugger
-    if (userName =="admin" && password=="admin1234"){
+    if (userName === "admin" && password === "admin1234"){
         history.push("/home")
         // callLogin(userName, password);
     } else{
-        console.log("Error de login")
-        setPasswordError(true);
+        showAlertNotification('', "Usuario y/o contraseña incorrecta.", 'danger')
     }
   };
 
     return(
         <div style={{
-            width: "auto",
-            height: "80%",
+            width: "100vw",
+            height: "100vh",
             backgroundImage: `url(${Background})`,
-            backgroundSize: "100%",
+            backgroundSize:"100% 100%",
+            backgroundRepeat:"no-repeat",
             textAlign: "center",
             fontSize: "30px",
+            // marginLeft:"18%",
             color: "black"}} > 
             <Title className="title-container" />
             <Label text="Usuario"/>
             <input  style={{
-                padding: "10px",
+                padding: "1%",
                 marginBottom: "2%",
-                marginTop: "2%"}}
+                marginTop: "5%"
+            }}
                 onChange={(e) => setUserName(e.target.value)}
                 placeholder='Ingrese su usuario'
             />
             <Label text="Contraseña"/>
+            <div  style={{padding:"2%"}}>
             <input  style={{
-                padding: "10px",
-                marginBottom: "2%",
+                padding: "1%",
+                marginBottom: "5vh",
                 marginTop: "2%"}}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder='Ingrese su contraseña'
                 type="password"
             />
-            <Label text="Seleccione su hotel"/>
-            <Dropdown />
+            </div>
+            
+            {/* <Label text="Seleccione su hotel"/> */}
+            {/* <Dropdown /> */}
             <button onClick={buttonLogin} style={{
                 color:"#f5f5dc",
-                padding: "10px",
-                backgroundColor: "transparent",
+                backgroundColor: "grey",
                 border: "2px solid  #50564f",
-                marginBottom: "2%",
-                marginTop: "2%",
+                marginTop: "5vh",
                 fontWeight: "bolder",
-                width:"200px",
-                height: "50px",
-                fontSize: "25px"
+                width:"10%",
+                height: "8%",
+                fontSize: "70%"
                 }}
     >Ingresar</button>
         </div>

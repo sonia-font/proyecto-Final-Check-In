@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'react-notifications-component/dist/theme.css'
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Login from './modules/login/Login';
 import Home from './modules/home/Home';
+import ReactNotification from 'react-notifications-component'
 import {
   BrowserRouter,
   Route,
@@ -14,8 +16,8 @@ import {
 } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { createBrowserHistory } from 'history'
-import Footer from './shared/Footer/Footer';
-import Header from './shared/Header/Header';
+// import Footer from './shared/Footer/Footer';
+// import Header from './shared/Header/Header';
 
 const history = createBrowserHistory()
 
@@ -38,10 +40,11 @@ ReactDOM.render(
   <React.StrictMode>
     <Router history={history}>
       <BrowserRouter>
+      <ReactNotification />
         <App>
-          <Header/>
+          {/* <Header/> */}
             <Body/>
-          <Footer/>
+          {/* <Footer/> */}
         </App>
       </BrowserRouter>
     </Router>

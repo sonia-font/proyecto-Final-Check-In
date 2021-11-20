@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Title from '../home/components/title/Title'
 // import Input from '../login/components/input/Input'
-import Background from '../../assets/img/11.jpg'
+import Background from '../../assets/img/homeImage.jpg'
 import Label from './components/label/Label'
 import Imagen from '../../assets/img/perrito.jpg'
 
@@ -33,10 +33,11 @@ const Home = () =>{
     return(
       <div>
 { !nroReserva && <div style={{
-            width: "auto",
-            height: "88vh",
+            width: "100vw",
+            height: "100vh",
             backgroundImage: `url(${Background})`,
-            backgroundSize: "100%",
+            backgroundSize: "100% 100%",
+            backgroundRepeat:"no-repeat",
             textAlign: "center",
             fontSize: "30px",
             color: "black",
@@ -44,30 +45,29 @@ const Home = () =>{
             <Title className="title-container"/>
             <Label text="Ingrese el número de reserva"/>
             <input  style={{
-                padding: "10px",
+                padding: "1%",
                 marginBottom: "2%"}}
                 onChange={(e) => (e.target.value)}
                 placeholder='Número de reserva'
             />
             <button onClick={buscar} style={{
                 color:"#f5f5dc",
-                padding: "10px",
-                backgroundColor: "transparent",
+                backgroundColor: "grey",
                 border: "2px solid  #50564f",
-                marginBottom: "2%",
+                marginTop: "5vh",
                 marginLeft:"2%",
-                marginTop: "2%",
                 fontWeight: "bolder",
-                width:"130px",
-                height: "40px",
-                fontSize: "15px"
+                width:"10%",
+                height: "8%",
+                fontSize: "70%"
                 }} >Buscar</button>
         </div>}
   {nroReserva &&        <div style={{
-            width: "auto",
-            height: "100%",
+            width: "100vw",
+            height: "100vh",
             backgroundImage: `url(${Background})`,
-            backgroundSize: "100%",
+            backgroundSize: "100% 100%",
+            backgroundRepeat:"no-repeat",
             textAlign: "center",
             fontSize: "30px",
             color: "black",
@@ -75,26 +75,24 @@ const Home = () =>{
             <Title className="title-container"/>
             <Label text="Ingrese el número de reserva"/>
             <input  style={{
-                padding: "10px",
+                padding: "1%",
                 marginBottom: "2%"}}
                 onChange={(e) => (e.target.value)}
                 placeholder='Número de reserva'
             />
             <button onClick={buscar} style={{
                 color:"#f5f5dc",
-                padding: "10px",
-                backgroundColor: "transparent",
+                backgroundColor: "grey",
                 border: "2px solid  #50564f",
-                marginBottom: "2%",
+                marginTop: "5vh",
                 marginLeft:"2%",
-                marginTop: "2%",
                 fontWeight: "bolder",
-                width:"130px",
-                height: "40px",
-                fontSize: "15px"
+                width:"10%",
+                height: "8%",
+                fontSize: "70%"
                 }}
     >Buscar</button>
-            {nroReserva && <div><img src={Imagen} style={{height:"20%",width:"20%", marginBottom:"5%"}}/></div>}
+            {nroReserva && <div><img src={Imagen} style={{height:"10%",width:"10%", marginBottom:"5%"}}/></div>}
             { nroReserva && 
                 <table  style={{color:"#f5f5dc", borderColor:"white", margin:"auto",textAlign:"center",  border: "3px solid #50564f"}}>
                 <tr style={{ backgroundColor:"#f5f5dc", color:"black"}}>
@@ -125,37 +123,33 @@ const Home = () =>{
             }
              { nroReserva && <Label text="Ingrese el número de habitación"/>}
              { nroReserva && <input  style={{
-                padding: "10px",
+                padding: "1%",
                 marginBottom: "2%"}}
                 onChange={(e) => (e.target.value)}
                 placeholder='Número de habitación'
             />}
              { nroReserva && <button onClick={asignarHabitacion} style={{
                 color:"#f5f5dc",
-                padding: "10px",
-                backgroundColor: "transparent",
+                backgroundColor: "grey",
                 border: "2px solid  #50564f",
-                marginBottom: "2%",
+                marginTop: "5vh",
                 marginLeft:"2%",
-                marginTop: "2%",
                 fontWeight: "bolder",
-                width:"200px",
-                height: "40px",
-                fontSize: "15px"
+                width:"10%",
+                height: "8%",
+                fontSize: "70%"
                 }}
     >Asignar habitación</button>}
     <div>{nroHabitacion && <button onClick={realizarCheckout} style={{
                 color:"#f5f5dc",
-                padding: "10px",
-                backgroundColor: "transparent",
+                backgroundColor: "grey",
                 border: "2px solid  #50564f",
-                marginBottom: "2%",
+                marginTop: "5vh",
                 marginLeft:"2%",
-                marginTop: "2%",
                 fontWeight: "bolder",
-                width:"200px",
-                height: "40px",
-                fontSize: "15px"
+                width:"10%",
+                height: "8%",
+                fontSize: "70%"
                 }}
     >Realizar checkout</button>}</div>
     

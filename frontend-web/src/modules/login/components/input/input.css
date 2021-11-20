@@ -9,7 +9,7 @@
 }
 
 .input-container {
-    padding: 10px;
-    margin-bottom: 15px;
-    margin-top: 15px;
+    width:"10%";
+    height: "8%";
+    font-size: "70%";
 }
