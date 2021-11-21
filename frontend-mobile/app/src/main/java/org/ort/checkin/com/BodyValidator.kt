@@ -1,4 +1,3 @@
 package org.ort.checkin.com
 
-class BodyValidator {
-}
+class BodyValidator(var email:String)

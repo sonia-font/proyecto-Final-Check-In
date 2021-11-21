@@ -1,4 +1,3 @@
 package org.ort.checkin.com
 
-class Post {
-}
+class Post(var msg:String)
