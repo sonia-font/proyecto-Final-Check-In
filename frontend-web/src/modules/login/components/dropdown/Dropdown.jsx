@@ -7,47 +7,43 @@ const Main = styled("div")`
 `;
 
 const DropDownContainer = styled("div")`
-  width: 150px;
-  margin: 0 auto;
+  width: 300px;
+  padding-top: 20px;
+  padding-left: 300px;
+  height:40px;
 `;
 
 const DropDownHeader = styled("div")`
-  padding: 10px;
-  margin-bottom: 15px;
-  margin-top: 15px;  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
   font-weight: 500;
   font-size: 1.3rem;
-  color:#f5f5dc;
-  background-color: Transparent;
+  color:dimgray;
+  background-color: white;
   width: auto;
-  border: 2px solid  #50564f;
-
-
+  height: 40px;
+  padding-top: 10px;
 `;
 
 const DropDownListContainer = styled("div")``;
 
 const DropDownList = styled("ul")`
-  width: auto;
-  padding: 0;
-  margin: 0;
-  padding-left: 1em;
-  border: 2px solid  #50564f;
-  box-sizing: border-box;
+  width: 300px;
+  height: 40px
   font-size: 1.3rem;
   font-weight: 500;
-  background-color: Transparent;
-  color:#f5f5dc;
-  &:first-child {
-    padding-top: 0.8em;
-  }
+  background-color: white;
+  color:dimgray;  
+  position: absolute;
+  padding-left: 0;
 `;
 
 const ListItem = styled("li")`
   list-style: none;
-  margin-bottom: 0.8em;
+  font-size: 1.3rem;
   text-align: center;
-
+  position: relative;
+  width: 300px;
+  height: 40px;
+  margin-top: 10px;
 `;
 
 const options = ["Hilton", "Sheraton"];
@@ -68,7 +64,7 @@ const Dropdown = () => {
     <Main>
       <DropDownContainer>
         <DropDownHeader onClick={toggling}>
-          {selectedOption || "Hotel"}
+          {selectedOption || "Seleccione un hotel"}
         </DropDownHeader>
         {isOpen && (
           <DropDownListContainer>

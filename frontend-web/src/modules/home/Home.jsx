@@ -4,6 +4,7 @@ import Title from '../home/components/title/Title'
 import Background from '../../assets/img/homeImage.jpg'
 import Label from './components/label/Label'
 import Imagen from '../../assets/img/perrito.jpg'
+import '../home/home.css'
 
 const Home = () =>{
     
@@ -22,12 +23,14 @@ const Home = () =>{
     }
 
     const data = {
-      nroReserva:"01",
-      nombreHuesped:"Dummy",
-      dni:"12345678",
-      numeroDeHuespedes:"2",
-      acompañante1:"Dummy tummy",
-      dniAcompañante1:"12312312",
+      nombre:"Juan",
+      apellido:"Perez",
+      tipo:"DNI",
+      documento:"12345678",
+      email:"juanPerez@gmail.com",
+      comienzo:"01/01/2021",
+      fin:"02/01/2021",
+      estado:"COMPLETO",
       numeroDeHabitacion:null,
     }
     return(
@@ -42,24 +45,28 @@ const Home = () =>{
             fontSize: "30px",
             color: "black",
             }}>
-            <Title className="title-container"/>
-            <Label text="Ingrese el número de reserva"/>
             <input  style={{
-                padding: "1%",
-                marginBottom: "2%"}}
+                width: "300px", 
+                height: "40px", 
+                marginRight: "5px",
+                position: "absolute",
+                left: "300px",
+                top: "20px"
+              }}
                 onChange={(e) => (e.target.value)}
-                placeholder='Número de reserva'
+                placeholder='Ingrese un codigo de reserva'
             />
             <button onClick={buscar} style={{
-                color:"#f5f5dc",
-                backgroundColor: "grey",
-                border: "2px solid  #50564f",
-                marginTop: "5vh",
-                marginLeft:"2%",
+                color:"dimgray",
+                backgroundColor: "lightgray",
+                border: "2px solid lightgray",
                 fontWeight: "bolder",
-                width:"10%",
-                height: "8%",
-                fontSize: "70%"
+                width:"150px",
+                height: "45px",
+                fontSize: "70%",
+                position: "absolute",
+                left: "615px",
+                top: "20px"
                 }} >Buscar</button>
         </div>}
   {nroReserva &&        <div style={{
@@ -72,87 +79,108 @@ const Home = () =>{
             fontSize: "30px",
             color: "black",
             }} > 
-            <Title className="title-container"/>
-            <Label text="Ingrese el número de reserva"/>
             <input  style={{
-                padding: "1%",
-                marginBottom: "2%"}}
+                width: "300px", 
+                height: "40px", 
+                marginRight: "5px",
+                position: "absolute",
+                left: "300px",
+                top: "20px"}}
                 onChange={(e) => (e.target.value)}
-                placeholder='Número de reserva'
+                placeholder='Ingrese un codigo de reserva'
             />
             <button onClick={buscar} style={{
-                color:"#f5f5dc",
-                backgroundColor: "grey",
-                border: "2px solid  #50564f",
-                marginTop: "5vh",
-                marginLeft:"2%",
+                color:"dimgray",
+                backgroundColor: "lightgray",
+                border: "2px solid lightgray",
                 fontWeight: "bolder",
-                width:"10%",
-                height: "8%",
-                fontSize: "70%"
+                width:"150px",
+                height: "45px",
+                fontSize: "70%",
+                position: "absolute",
+                left: "615px",
+                top: "20px"
                 }}
     >Buscar</button>
-            {nroReserva && <div><img src={Imagen} style={{height:"10%",width:"10%", marginBottom:"5%"}}/></div>}
+            <Title className="title-container"/>
             { nroReserva && 
-                <table  style={{color:"#f5f5dc", borderColor:"white", margin:"auto",textAlign:"center",  border: "3px solid #50564f"}}>
-                <tr style={{ backgroundColor:"#f5f5dc", color:"black"}}>
-                  <td>N° de reserva: </td>
-                  <td>{data.nroReserva}</td>
-                </tr>
-                <tr style={{ backgroundColor:"#f5f5dc", color:"black"}}>
-                  <td>Reserva a nombre de: </td>
-                  <td>{data.nombreHuesped}</td>
-                </tr>
-                <tr style={{ backgroundColor:"#f5f5dc", color:"black"}}>
-                  <td>DNI: </td>
-                  <td>{data.dni}</td>
-                </tr>
-                <tr style={{ backgroundColor:"#f5f5dc", color:"black"}}>
-                  <td>Habitación para  </td>
-                  <td>{data.numeroDeHuespedes} persona/s.</td>
-                </tr>
-                <tr style={{ backgroundColor:"#f5f5dc", color:"black"}}>
-                  <td>Nombre del acompañante: </td>
-                  <td>{data.acompañante1}</td>
-                </tr>
-                <tr style={{ backgroundColor:"#f5f5dc", color:"black"}}>
-                  <td>DNI del acompañante: </td>
-                  <td>{data.dniAcompañante1}</td>
-                </tr>
-              </table>
-            }
-             { nroReserva && <Label text="Ingrese el número de habitación"/>}
-             { nroReserva && <input  style={{
-                padding: "1%",
-                marginBottom: "2%"}}
+                <table  style={{
+                    backgroundColor:"white", 
+                    marginLeft:"300px", 
+                    marginRight:"300px",
+                    textAlign:"left", 
+                    padding:"30px 0", 
+                    borderSpacing: "50px 0",
+                    fontSize: "large"
+                  }}>  
+                    <tr>
+                      <td rowSpan="9"><img src={Imagen} style={{height:"80%",width:"80%"}}/></td>                      
+                      <td colSpan="2" className="table-title">Informacion personal</td>       
+                    </tr>
+                    <tr>
+                      <td className="table-subtitle">Huesped</td>
+                      <td className="table-subtitle">Documento</td>
+                    </tr> 
+                    <tr>
+                      <td className="table-data">{data.nombre} {data.apellido}</td>
+                      <td className="table-data">{data.tipo} {data.documento}</td>
+                    </tr> 
+                    <tr>
+                      <td className="table-subtitle">Email</td>
+                      <td></td>
+                    </tr> 
+                    <tr>
+                      <td className="table-data">{data.email}</td>
+                      <td></td>
+                    </tr> 
+                    <tr>
+                      <td colSpan="2" className="table-title">Datos de reserva</td> 
+                    </tr> 
+                    <tr>
+                      <td className="table-subtitle">Comienzo</td>
+                      <td className="table-subtitle">Fin</td>
+                    </tr>  
+                    <tr>
+                      <td className="table-data">{data.comienzo}</td>
+                      <td className="table-data">{data.fin}</td>
+                    </tr> 
+                    <tr>
+                      <td className="table-subtitle">Estado</td>
+                      <td className="table-subtitle">Habitacion</td>
+                    </tr>  
+                    <tr>
+                      <td><div>{nroHabitacion && <button onClick={realizarCheckout} style={{
+                color:"dimgray",
+                backgroundColor: "lightgray",
+                border: "2px solid lightgray",
+                fontWeight: "bolder",
+                width:"325px",
+                height: "30px",
+                fontSize: "70%"
+                }}
+    >Realizar checkout</button>}</div></td> 
+                      <td className="table-data">{data.estado}</td>
+                      <td>{ nroReserva && <input  style={{
+                        width:"50px",
+                        height:"25px"
+                      }}
                 onChange={(e) => (e.target.value)}
-                placeholder='Número de habitación'
             />}
              { nroReserva && <button onClick={asignarHabitacion} style={{
-                color:"#f5f5dc",
-                backgroundColor: "grey",
-                border: "2px solid  #50564f",
-                marginTop: "5vh",
-                marginLeft:"2%",
+                color:"dimgray",
+                backgroundColor: "lightgray",
+                border: "2px solid lightgray",
                 fontWeight: "bolder",
-                width:"10%",
-                height: "8%",
-                fontSize: "70%"
+                width:"70px",
+                height: "30px",
+                fontSize: "70%",
+                marginLeft: "5px"
                 }}
-    >Asignar habitación</button>}
-    <div>{nroHabitacion && <button onClick={realizarCheckout} style={{
-                color:"#f5f5dc",
-                backgroundColor: "grey",
-                border: "2px solid  #50564f",
-                marginTop: "5vh",
-                marginLeft:"2%",
-                fontWeight: "bolder",
-                width:"10%",
-                height: "8%",
-                fontSize: "70%"
-                }}
-    >Realizar checkout</button>}</div>
-    
+    >Asignar</button>}</td>
+                    </tr>   
+                  
+              </table>
+            }      
         </div>}
         
       </div>

@@ -1,0 +1,11 @@
+.table-title {
+    font-size: x-large;
+    font-weight: bold;
+    color: dimgray;
+}
+.table-subtitle{
+    color:dimgray
+}
+.table-data {
+    color: lightgray
+}
