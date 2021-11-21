@@ -51,7 +51,7 @@ const Login = () => {
             fontSize: "30px",
             // marginLeft:"18%",
             color: "black"}} > 
-            <Dropdown options={options} onChange={_onSelect} placeholder="Seleccione un hotel" />                         
+            <Dropdown options={hotels} placeholder="Seleccione un hotel" />                         
             <Title className="title-container" />
             <Label text="Email" />
             <input style={{
@@ -75,9 +75,6 @@ const Login = () => {
                 type="password"
             />
             </div>
-
-            {/* <Label text="Seleccione su hotel"/> */}
-            <Dropdown />
         
             <button onClick={buttonLogin} style={{
                 color:"dimgray",
