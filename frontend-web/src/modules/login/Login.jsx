@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import Title from './components/title/Title'
 import Label from './components/label/Label'
 // import Input from '../login/components/input/Input'
-import Dropdown from './components/dropdown/Dropdown'
+//import Dropdown from './components/dropdown/Dropdown'
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
 import { callLogin, getHotels } from '../../shared/Services/RequestService'
 import '../login/login.scss'
 import { useHistory } from 'react-router-dom'
@@ -48,42 +50,40 @@ const Login = () => {
             textAlign: "center",
             fontSize: "30px",
             // marginLeft:"18%",
-            color: "black"
-        }} >
+            color: "black"}} > 
+            <Dropdown options={hotels} placeholder="Seleccione un hotel" />                         
             <Title className="title-container" />
             <Label text="Email" />
             <input style={{
                 padding: "1%",
                 marginBottom: "2%",
-                marginTop: "5%"
+                marginTop: "2%",
+                width: "200px"
             }}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder='Ingrese su usuario'
             />
-            <Label text="Contraseña" />
-            <div style={{ padding: "2%" }}>
-                <input style={{
-                    padding: "1%",
-                    marginBottom: "5vh",
-                    marginTop: "2%"
-                }}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder='Ingrese su contraseña'
-                    type="password"
-                />
+            <Label text="Contraseña"/>
+            <div>
+            <input  style={{
+                padding: "1%",
+                marginBottom: "5vh",
+                marginTop: "2%",
+                width: "200px"}}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder='Ingrese su contraseña'
+                type="password"
+            />
             </div>
-
-            {/* <Label text="Seleccione su hotel"/> */}
-            <Dropdown />
         
             <button onClick={buttonLogin} style={{
-                color: "#f5f5dc",
-                backgroundColor: "grey",
-                border: "2px solid  #50564f",
+                color:"dimgray",
+                backgroundColor: "lightgray",
+                border: "2px solid lightgray",
                 marginTop: "5vh",
                 fontWeight: "bolder",
-                width: "10%",
-                height: "8%",
+                width:"300px",
+                height: "50px",
                 fontSize: "70%"
             }}
             >Ingresar</button>

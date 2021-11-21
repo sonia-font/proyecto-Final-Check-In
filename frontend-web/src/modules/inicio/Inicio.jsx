@@ -1,6 +1,7 @@
 import React from "react";
-import Background from '../../assets/img/homeImage.jpg'
+import Background from '../../assets/img/welcomeImage.jpg'
 import { useHistory } from 'react-router-dom'
+import Label from './components/label/Label'
 
 const Inicio = () => {
   const history = useHistory()
@@ -9,31 +10,32 @@ const Inicio = () => {
     history.push("/login")
   }
 
-  return (
-    <div>
+  return (    
+    <div style={{
+      width: "100vw",
+      height: "100vh",
+      backgroundImage: `url(${Background})`,
+      backgroundSize: "100% 100%",
+      backgroundRepeat: "no-repeat",
+      textAlign: "center",
+      fontSize: "30px",
+      color: "black",
+    }}>
       <div style={{
-        width: "100vw",
-        height: "100vh",
-        backgroundImage: `url(${Background})`,
-        backgroundSize: "100% 100%",
-        backgroundRepeat: "no-repeat",
-        textAlign: "center",
-        fontSize: "30px",
-        color: "black",
+          paddingTop: "450px"
       }}>
-        <label style={{ marginTop: "40vh", padding: "2%", color: "black", fontWeight: "bolder", width: "10%", height: "8%", fontSize: "70%" }}>"¡Bienvenidos!"</label>
+        <Label text="¡Bienvenido!"/>
         <button onClick={continueToLogin} style={{
-          color: "#f5f5dc",
-          backgroundColor: "grey",
-          border: "2px solid  #50564f",
-          marginTop: "50vh",
-          marginLeft: "2%",
+          color:"dimgray",
+          backgroundColor: "lightgray",
+          border: "2px solid lightgray",
+          marginTop: "5vh",
           fontWeight: "bolder",
-          width: "10%",
-          height: "8%",
+          width:"300px",
+          height: "50px",
           fontSize: "70%"
         }}
-        >Check-In</button>
+        >Check In</button>
       </div>
 
     </div>
