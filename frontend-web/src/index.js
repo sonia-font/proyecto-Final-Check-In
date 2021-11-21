@@ -6,7 +6,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Login from './modules/login/Login';
 import Home from './modules/home/Home';
-import Welcome from './modules/welcome/Welcome';
+import Inicio from './modules/inicio/Inicio';
+
 import ReactNotification from 'react-notifications-component'
 import {
   BrowserRouter,
@@ -24,7 +25,7 @@ const history = createBrowserHistory()
 
 const BodyComponent = () => (
   <Switch>
-      <Route path={"/welcome"}  component={Welcome} exact />
+      <Route path={"/"}  component={Inicio} exact />
       <Route path={"/login"}  component={Login} exact />
       <Route path={"/home"}  component={Home} exact />
   </Switch>

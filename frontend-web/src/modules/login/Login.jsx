@@ -1,61 +1,66 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import Title from './components/title/Title'
 import Label from './components/label/Label'
 // import Input from '../login/components/input/Input'
 //import Dropdown from './components/dropdown/Dropdown'
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
+import { callLogin, getHotels } from '../../shared/Services/RequestService'
 import '../login/login.scss'
 import { useHistory } from 'react-router-dom'
 import Background from '../../assets/img/loginImage.jpg'
 import { showAlertNotification } from '../../shared/AlertNotification/AlertNotification'
 
-const Login = () =>{
-    const [userName, setUserName] = useState(null);
+const Login = () => {
+    const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(null);
-
-    const _onSelect = value => () => {
-        setSelectedOption(value);
-        setIsOpen(false);
-    };
-
-    // const [userHotel,setUserHotel] = useState(null);
+    const [hotels, setHotels] = useState([]);
+    const [showModal,setShowModal] = useState(false)
     const history = useHistory()
 
-    const buttonLogin = () => {
-        if (userName === "admin" && password === "admin1234"){
+    let idHotel = 0;
+
+    const buttonLogin = async () => {
+        console.log("data: " + email + ", " + password + ", " + idHotel)
+        const response = await callLogin(email, password, idHotel);
+        if (response) {
             history.push("/home")
-            // callLogin(userName, password);
-        } else{
+        } else {
+            //Revisar el mensaje de error devuelto para cambiarlo por el hardcodeado
             showAlertNotification('', "Usuario y/o contraseña incorrecta.", 'danger')
         }
     };
 
-    const options = ["Hilton", "Sheraton"];
+    const searchHotels = async () => {
+        const responseHotels = await getHotels();
+        setHotels(responseHotels)
+    }
 
-    return(
+    useEffect(() => {
+        searchHotels();
+    }, [])
+
+    return (
         <div style={{
             width: "100vw",
             height: "100vh",
             backgroundImage: `url(${Background})`,
-            backgroundSize:"100% 100%",
-            backgroundRepeat:"no-repeat",
+            backgroundSize: "100% 100%",
+            backgroundRepeat: "no-repeat",
             textAlign: "center",
             fontSize: "30px",
             // marginLeft:"18%",
             color: "black"}} > 
             <Dropdown options={options} onChange={_onSelect} placeholder="Seleccione un hotel" />                         
             <Title className="title-container" />
-            <Label text="Usuario"/>
-            <input  style={{
+            <Label text="Email" />
+            <input style={{
                 padding: "1%",
                 marginBottom: "2%",
                 marginTop: "2%",
                 width: "200px"
             }}
-                onChange={(e) => setUserName(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder='Ingrese su usuario'
             />
             <Label text="Contraseña"/>
@@ -70,9 +75,10 @@ const Login = () =>{
                 type="password"
             />
             </div>
-            
+
             {/* <Label text="Seleccione su hotel"/> */}
-            {/* <Dropdown /> */}
+            <Dropdown />
+        
             <button onClick={buttonLogin} style={{
                 color:"dimgray",
                 backgroundColor: "lightgray",
@@ -82,8 +88,8 @@ const Login = () =>{
                 width:"300px",
                 height: "50px",
                 fontSize: "70%"
-                }}
-    >Ingresar</button>
+            }}
+            >Ingresar</button>
         </div>
     )
 };
