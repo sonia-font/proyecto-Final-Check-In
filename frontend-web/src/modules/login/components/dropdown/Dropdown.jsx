@@ -46,9 +46,15 @@ const ListItem = styled("li")`
   margin-top: 10px;
 `;
 
-const options = ["Hilton", "Sheraton"];
 
-const Dropdown = () => {
+const options = [
+  {
+      "id": 0,
+      "nombre": "Hotel Test"
+  }
+];
+
+const Dropdown = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -70,8 +76,8 @@ const Dropdown = () => {
           <DropDownListContainer>
             <DropDownList>
               {options.map(option => (
-                <ListItem onClick={onOptionClicked(option)} key={Math.random()}>
-                  {option}
+                <ListItem onClick={onOptionClicked(option)} key={option.id}>
+                  {option.nombre}
                 </ListItem>
               ))}
             </DropDownList>
