@@ -1,4 +1,9 @@
 .label-container {
-    padding: 10px;
-    color:#f5f5dc;
+    padding: 2%;
+    /* color:#f5f5dc; */
+    color: black;
+    font-weight:bolder;
+    width:"10%";
+    height: "8%";
+    font-size: "70%";
 }

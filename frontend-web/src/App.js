@@ -1,17 +1,10 @@
-import './App.css';
-import Header from './shared/Header/Header';
-import Body from './shared/Body/Body';
-import Footer from './shared/Footer/Footer';
+import React from 'react'
+import propTypes from 'prop-types'
 
-function App() {
-  return (
-    <div className="App">
-      <Header/>
-      <Body>
-      </Body>
-      <Footer/>
-    </div>
-  );
+const App = ({ children }) => <div>{children}</div>
+
+App.propTypes = {
+    children: propTypes.element
 }
 
-export default App;
+export default App
