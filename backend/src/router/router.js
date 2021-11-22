@@ -2,14 +2,16 @@ import express from 'express'
 import ServicioHoteles from '../servicios/servicioHoteles.js'
 import ParseService from '../shared/parser/parseService.js'
 import EmailService from '../shared/mails/emailService.js'
-
+import AxiosFiware from './fiware.js'
+import { getFiwareCNX } from './config.js'
 
 class Router {
 
     constructor(){
         this.servHoteles = new ServicioHoteles()
         this.parseService = new ParseService()   
-        this.emailService = new EmailService()     
+        this.emailService = new EmailService()
+        this.fiwareService = new AxiosFiware(getFiwareCNX())
     }
 
     createRouter(){
@@ -22,6 +24,7 @@ class Router {
         router.post('/hotel/crear', async(req, res, next) => {
             try {
                 await this.servHoteles.agregar(req.body)
+                this.fiwareService.addEntity(req.body)
                 res.status(201).send({msg: "Hotel creado exitosamente"})
             } catch(error) {
                 next(error)
