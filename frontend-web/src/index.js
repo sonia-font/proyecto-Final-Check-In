@@ -7,19 +7,10 @@ import reportWebVitals from './reportWebVitals';
 import Login from './modules/login/Login';
 import Home from './modules/home/Home';
 import Inicio from './modules/inicio/Inicio';
-
 import ReactNotification from 'react-notifications-component'
-import {
-  BrowserRouter,
-  Route,
-  Router,
-  Switch,
-  withRouter,
-} from 'react-router-dom'
+import { BrowserRouter, Route,  Router, Switch, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { createBrowserHistory } from 'history'
-// import Footer from './shared/Footer/Footer';
-// import Header from './shared/Header/Header';
 
 const history = createBrowserHistory()
 
@@ -45,9 +36,7 @@ ReactDOM.render(
       <BrowserRouter>
       <ReactNotification />
         <App>
-          {/* <Header/> */}
-            <Body/>
-          {/* <Footer/> */}
+          <Body/>
         </App>
       </BrowserRouter>
     </Router>
@@ -55,7 +44,4 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
