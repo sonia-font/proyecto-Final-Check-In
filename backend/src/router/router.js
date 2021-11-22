@@ -133,7 +133,6 @@ class Router {
             }         
         })
 
-
         // PUNTAS EMPLEADO        
 
         // Agrega un empleado a un hotel. 
