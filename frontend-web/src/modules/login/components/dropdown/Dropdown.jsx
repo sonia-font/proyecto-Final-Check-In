@@ -63,7 +63,6 @@ const Dropdown = (props) => {
   const onOptionClicked = value => () => {
     setSelectedOption(value);
     setIsOpen(false);
-    console.log(selectedOption);
   };
 
   return (

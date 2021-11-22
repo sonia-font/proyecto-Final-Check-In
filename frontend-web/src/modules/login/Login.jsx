@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Title from './components/title/Title'
 import Label from './components/label/Label'
-// import Input from '../login/components/input/Input'
-//import Dropdown from './components/dropdown/Dropdown'
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import { callLogin, getHotels } from '../../shared/Services/RequestService'
@@ -15,25 +13,25 @@ const Login = () => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const [hotels, setHotels] = useState([]);
-    const [showModal,setShowModal] = useState(false)
     const history = useHistory()
 
     let idHotel = 0;
 
     const buttonLogin = async () => {
-        console.log("data: " + email + ", " + password + ", " + idHotel)
         const response = await callLogin(email, password, idHotel);
         if (response) {
             history.push("/home")
         } else {
-            //Revisar el mensaje de error devuelto para cambiarlo por el hardcodeado
             showAlertNotification('', "Usuario y/o contraseña incorrecta.", 'danger')
         }
     };
 
     const searchHotels = async () => {
         const responseHotels = await getHotels();
-        setHotels(responseHotels)
+        const hotels = responseHotels.map(function(hotel) {
+            return { value: hotel.id, label: hotel.nombre}
+        })
+        setHotels(hotels)
     }
 
     useEffect(() => {
