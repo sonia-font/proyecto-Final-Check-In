@@ -3,11 +3,14 @@ import Hotel from '../negocio/modelos/hotel.js'
 import Empleado from '../negocio/modelos/empleado.js'
 import Reserva from '../negocio/modelos/reserva.js'
 import Estado from '../negocio/modelos/estado.js'
+import AxiosFiware from '../router/fiware.js'
+import { getFiwareCNX } from '../router/config.js'
 
 class ServicioHoteles {
 
     constructor() {
         this.hotelesManager = new GestorHoteles()
+        this.fiwareService = new AxiosFiware(getFiwareCNX())
     }
 
     /**
@@ -127,7 +130,7 @@ class ServicioHoteles {
                     if (estado !== null){
                         reserva.estado = estado   
                     }
-
+                    this.fiwareService.modifyEntity(hotel.id,reserva.codigo,reserva.estado)
                     this.hotelesManager.updateById(hotel)
                     reservaEncontrada = reserva
                 }
