@@ -49,8 +49,8 @@ const ListItem = styled("li")`
 
 const options = [
   {
-      "id": 0,
-      "nombre": "Hotel Test"
+    "id": 0,
+    "nombre": "Hotel Test"
   }
 ];
 
@@ -63,7 +63,6 @@ const Dropdown = (props) => {
   const onOptionClicked = value => () => {
     setSelectedOption(value);
     setIsOpen(false);
-    console.log(selectedOption);
   };
 
   return (

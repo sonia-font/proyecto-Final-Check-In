@@ -111,31 +111,18 @@ class Router {
             } catch(error) {
                 next(error)
             }
-        })
+        })               
 
         // Actualiza la reserva
-        // Tiene que recibir un multipart/form-data con la foto, tipo y numero de documento
-        router.put('/:idHotel/:codReserva/actualizar/foto', async(req, res, next) => {
+        router.put('/:idHotel/:codReserva/actualizar',async (req, res, next) =>{
             try {
-                var datos = await this.parseService.parseForm(req)
-                await this.servHoteles.actualizarReserva(req.params.idHotel, req.params.codReserva, null, datos.foto, datos.tipo, datos.documento, null)
-                res.status(201).send({msg: "Reserva actualizada"})
-            } catch(error) {
-                next(error)
-            }
-        });        
-
-        // Actualiza la reserva
-        // Recibe el codigo de reserva y el numero de habitacion por parametro y actualiza la reserva 
-        router.put('/:idHotel/:codReserva/actualizar/:numHabitacion',async (req, res, next) =>{
-            try {
-                await this.servHoteles.actualizarReserva(req.params.idHotel, req.params.codReserva, null, null, null, null, req.params.numHabitacion)
+                req.body.foto = await this.parseService.convertToImage(req.body.foto)
+                await this.servHoteles.actualizarReserva(req.params.idHotel, req.params.codReserva, null, req.body)
                 res.status(201).send({msg: "Reserva actualizada"})
             } catch(error) {
                 next(error)
             }         
         })
-
 
         // PUNTAS EMPLEADO        
 

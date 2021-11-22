@@ -101,13 +101,10 @@ class ServicioHoteles {
     * Devuelve una reserva actualizada
     * @param  {Number} id El id del hotel a buscar
     * @param  {Number} codigo El codigo de la reserva a buscar
-    * @param  {Estado} estado Enum del estado de la reserva
-    * @param  {String} foto La foto del huesped
-    * @param  {String} tipo El tipo de documento
-    * @param  {String} documento El numero de docuemnto
-    * @param  {Number} habitacion El numero de habitacion
+    * @param  {Estado} estado El codigo de la reserva a buscar
+    * @param  {Object} data Contiene estado, foto, tipo, documento y habitacion
     */
-    async actualizarReserva(id, codigo, estado, foto, tipo, documento, habitacion) {
+    async actualizarReserva(id, codigo, estado, data) {
         var hotel = await this.buscarPorId(id)
         var reservaEncontrada = null        
         var index = 0
@@ -119,17 +116,12 @@ class ServicioHoteles {
                 
                 if(reserva.codigo == codigo){
 
-                    if(foto !== null){
-                        reserva.huesped.foto = foto
-                        reserva.huesped.tipo = tipo
-                        reserva.huesped.documento = documento
+                    if(estado === null){
+                        reserva.huesped.foto = data.foto
+                        reserva.huesped.tipo = data.tipo
+                        reserva.huesped.documento = data.documento
+                        reserva.habitacion = data.habitacion?? ""
                         reserva.estado = Estado.COMPLETO
-
-                    } 
-                    
-                    if (habitacion !== null){
-                        reserva.habitacion = habitacion
-
                     } 
                     
                     if (estado !== null){
