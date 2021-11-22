@@ -60,7 +60,7 @@ const Login = () => {
                 width: "200px"
             }}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder='Ingrese su usuario'
+                placeholder='Ingrese su email'
             />
             <Label text="Contraseña" />
             <div>
