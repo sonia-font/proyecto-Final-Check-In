@@ -28,8 +28,8 @@ const Login = () => {
 
     const searchHotels = async () => {
         const responseHotels = await getHotels();
-        const hotels = responseHotels.map(function(hotel) {
-            return { value: hotel.id, label: hotel.nombre}
+        const hotels = responseHotels.map(function (hotel) {
+            return { value: hotel.id, label: hotel.nombre }
         })
         setHotels(hotels)
     }
@@ -48,8 +48,9 @@ const Login = () => {
             textAlign: "center",
             fontSize: "30px",
             // marginLeft:"18%",
-            color: "black"}} > 
-            <Dropdown options={hotels} placeholder="Seleccione un hotel" />                         
+            color: "black"
+        }} >
+            <Dropdown options={hotels} placeholder="Seleccione un hotel" />
             <Title className="title-container" />
             <Label text="Email" />
             <input style={{
@@ -61,26 +62,27 @@ const Login = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder='Ingrese su usuario'
             />
-            <Label text="Contraseña"/>
+            <Label text="Contraseña" />
             <div>
-            <input  style={{
-                padding: "1%",
-                marginBottom: "5vh",
-                marginTop: "2%",
-                width: "200px"}}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder='Ingrese su contraseña'
-                type="password"
-            />
+                <input style={{
+                    padding: "1%",
+                    marginBottom: "5vh",
+                    marginTop: "2%",
+                    width: "200px"
+                }}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder='Ingrese su contraseña'
+                    type="password"
+                />
             </div>
-        
+
             <button onClick={buttonLogin} style={{
-                color:"dimgray",
+                color: "dimgray",
                 backgroundColor: "lightgray",
                 border: "2px solid lightgray",
                 marginTop: "5vh",
                 fontWeight: "bolder",
-                width:"300px",
+                width: "300px",
                 height: "50px",
                 fontSize: "70%"
             }}

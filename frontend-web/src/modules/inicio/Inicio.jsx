@@ -10,7 +10,7 @@ const Inicio = () => {
     history.push("/login")
   }
 
-  return (    
+  return (
     <div style={{
       width: "100vw",
       height: "100vh",
@@ -22,25 +22,22 @@ const Inicio = () => {
       color: "black",
     }}>
       <div style={{
-          paddingTop: "450px"
+        paddingTop: "450px"
       }}>
-        <Label text="¡Bienvenido!"/>
+        <Label text="¡Bienvenido!" />
         <button onClick={continueToLogin} style={{
-          color:"dimgray",
+          color: "dimgray",
           backgroundColor: "lightgray",
           border: "2px solid lightgray",
           marginTop: "5vh",
           fontWeight: "bolder",
-          width:"300px",
+          width: "300px",
           height: "50px",
           fontSize: "70%"
         }}
         >Check In</button>
       </div>
-
     </div>
-
-
   )
 };
 

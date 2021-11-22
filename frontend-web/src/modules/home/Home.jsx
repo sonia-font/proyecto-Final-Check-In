@@ -3,7 +3,7 @@ import Title from '../home/components/title/Title'
 import Background from '../../assets/img/homeImage.jpg'
 import Imagen from '../../assets/img/cr7.jpg'
 import '../home/home.css'
-import { searchReservation, updateReservation, selectRoom,deleteReservation } from '../../shared/Services/RequestService'
+import { searchReservation, updateReservation, selectRoom, deleteReservation } from '../../shared/Services/RequestService'
 import { showAlertNotification } from '../../shared/AlertNotification/AlertNotification'
 
 const Home = () => {
@@ -62,208 +62,208 @@ const Home = () => {
     }
   }
 
-    useEffect(() => {
-      console.log(reservation);
-    }, [reservation])
+  useEffect(() => {
+    console.log(reservation);
+  }, [reservation])
 
-    useEffect(() => {
-      console.log(imageUpload);
-    }, [imageUpload])
+  useEffect(() => {
+    console.log(imageUpload);
+  }, [imageUpload])
 
-    useEffect(() => {
-      console.log(numeroHabitacion);
-    }, [numeroHabitacion])
+  useEffect(() => {
+    console.log(numeroHabitacion);
+  }, [numeroHabitacion])
 
-    useEffect(() => {
-      console.log(codigoReserva);
-    }, [codigoReserva])
+  useEffect(() => {
+    console.log(codigoReserva);
+  }, [codigoReserva])
 
-    useEffect(() => {
-      console.log(tipoDocumento);
-    }, [tipoDocumento])
+  useEffect(() => {
+    console.log(tipoDocumento);
+  }, [tipoDocumento])
 
-    useEffect(() => {
-      console.log(numeroDocumento);
-    }, [numeroDocumento])
+  useEffect(() => {
+    console.log(numeroDocumento);
+  }, [numeroDocumento])
 
-    return (
-      <div>
-        {!nroReserva && <div style={{
-          width: "100vw",
-          height: "100vh",
-          backgroundImage: `url(${Background})`,
-          backgroundSize: "100% 100%",
-          backgroundRepeat: "no-repeat",
-          textAlign: "center",
-          fontSize: "30px",
-          color: "black",
-        }}>
-          <input style={{
-            width: "300px",
-            height: "40px",
-            marginRight: "5px",
-            position: "absolute",
-            left: "300px",
-            top: "20px"
-          }}
-            onChange={(e) => setCodigoReserva(e.target.value)}
-            placeholder='Ingrese un codigo de reserva'
-          />
-          <button onClick={searchRes} style={{
-            color: "dimgray",
-            backgroundColor: "lightgray",
-            border: "2px solid lightgray",
-            fontWeight: "bolder",
-            width: "150px",
-            height: "45px",
-            fontSize: "70%",
-            position: "absolute",
-            left: "615px",
-            top: "20px"
-          }}
-          >Buscar</button>
-        </div>}
-        {nroReserva && <div style={{
-          width: "100vw",
-          height: "100vh",
-          backgroundImage: `url(${Background})`,
-          backgroundSize: "100% 100%",
-          backgroundRepeat: "no-repeat",
-          textAlign: "center",
-          fontSize: "30px",
-          color: "black",
-        }} >
-          <input style={{
-            width: "300px",
-            height: "40px",
-            marginRight: "5px",
-            position: "absolute",
-            left: "300px",
-            top: "20px"
-          }}
-            onChange={(e) => setCodigoReserva(e.target.value)}
-            placeholder='Ingrese un codigo de reserva'
-          />
-          <button onClick={searchRes} style={{
-            color: "dimgray",
-            backgroundColor: "lightgray",
-            border: "2px solid lightgray",
-            fontWeight: "bolder",
-            width: "150px",
-            height: "45px",
-            fontSize: "70%",
-            position: "absolute",
-            left: "615px",
-            top: "20px"
-          }}
-          >Buscar</button>
-          <Title className="title-container" />
-          {reservation &&
-            <table style={{
-              backgroundColor: "white",
-              marginLeft: "300px",
-              marginRight: "300px",
-              textAlign: "left",
-              padding: "30px 0",
-              borderSpacing: "50px 0",
-              fontSize: "large"
-            }}>
-              <tr>
-                {incompleteReservation && <td rowSpan="9"><img src={Imagen} style={{ height: "80%", width: "80%" }} alt="foto-huesped" /><input type="file" name="file" onChange={(e) => setImageUpload(e.target.value)} /></td>}
-                {!incompleteReservation && <td rowSpan="9"><img src={reservation.huesped.foto} style={{ height: "80%", width: "80%" }} alt="foto-huesped" /></td>}
-                <td colSpan="3" className="table-title">Informacion personal</td>
-              </tr>
-              <tr>
-                <td className="table-subtitle">Huesped</td>
-                <td className="table-subtitle">Tipo de doc. N° de doc.</td>
-              </tr>
-              <tr>
-                <td className="table-data">{reservation.huesped.nombre} {reservation.huesped.apellido}</td>
-                {incompleteReservation && <td className="table-data"><input style={{
-                  width: "50px",
-                  height: "25px",
-                  marginRight: "20px"
-                }}
-                  onChange={(e) => setTipoDocumento(e.target.value)}
-                /><input style={{
-                  width: "100px",
-                  height: "25px"
-                }}
-                  onChange={(e) => setNumeroDocumento(e.target.value)}
-                  /></td>}
-                {!incompleteReservation && <td className="table-data">{reservation.huesped.tipo} </td>}
-                {!incompleteReservation && <td className="table-data">{reservation.huesped.documento}</td>}
-              </tr>
-              <tr>
-                <td className="table-subtitle">Email</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td className="table-data">{reservation.huesped.email}</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td colSpan="2" className="table-title">Datos de reserva</td>
-              </tr>
-              <tr>
-                <td className="table-subtitle">Comienzo</td>
-                <td className="table-subtitle">Fin</td>
-              </tr>
-              <tr>
-                <td className="table-data">{reservation.inicio}</td>
-                <td className="table-data">{reservation.fin}</td>
-              </tr>
-              <tr>
-                <td className="table-subtitle">Estado</td>
-                {!incompleteReservation && <td className="table-subtitle">Habitacion</td>}
-              </tr>
-              <tr>
-                <td><div>{nroHabitacion && <button onClick={realizarCheckout} style={{
+  return (
+    <div>
+      {!nroReserva && <div style={{
+        width: "100vw",
+        height: "100vh",
+        backgroundImage: `url(${Background})`,
+        backgroundSize: "100% 100%",
+        backgroundRepeat: "no-repeat",
+        textAlign: "center",
+        fontSize: "30px",
+        color: "black",
+      }}>
+        <input style={{
+          width: "300px",
+          height: "40px",
+          marginRight: "5px",
+          position: "absolute",
+          left: "300px",
+          top: "20px"
+        }}
+          onChange={(e) => setCodigoReserva(e.target.value)}
+          placeholder='Ingrese un codigo de reserva'
+        />
+        <button onClick={searchRes} style={{
+          color: "dimgray",
+          backgroundColor: "lightgray",
+          border: "2px solid lightgray",
+          fontWeight: "bolder",
+          width: "150px",
+          height: "45px",
+          fontSize: "70%",
+          position: "absolute",
+          left: "615px",
+          top: "20px"
+        }}
+        >Buscar</button>
+      </div>}
+      {nroReserva && <div style={{
+        width: "100vw",
+        height: "100vh",
+        backgroundImage: `url(${Background})`,
+        backgroundSize: "100% 100%",
+        backgroundRepeat: "no-repeat",
+        textAlign: "center",
+        fontSize: "30px",
+        color: "black",
+      }} >
+        <input style={{
+          width: "300px",
+          height: "40px",
+          marginRight: "5px",
+          position: "absolute",
+          left: "300px",
+          top: "20px"
+        }}
+          onChange={(e) => setCodigoReserva(e.target.value)}
+          placeholder='Ingrese un codigo de reserva'
+        />
+        <button onClick={searchRes} style={{
+          color: "dimgray",
+          backgroundColor: "lightgray",
+          border: "2px solid lightgray",
+          fontWeight: "bolder",
+          width: "150px",
+          height: "45px",
+          fontSize: "70%",
+          position: "absolute",
+          left: "615px",
+          top: "20px"
+        }}
+        >Buscar</button>
+        <Title className="title-container" />
+        {reservation &&
+          <table style={{
+            backgroundColor: "white",
+            marginLeft: "300px",
+            marginRight: "300px",
+            textAlign: "left",
+            padding: "30px 0",
+            borderSpacing: "50px 0",
+            fontSize: "large"
+          }}>
+            <tr>
+              {incompleteReservation && <td rowSpan="9"><img src={Imagen} style={{ height: "80%", width: "80%" }} alt="foto-huesped" /><input type="file" name="file" onChange={(e) => setImageUpload(e.target.value)} /></td>}
+              {!incompleteReservation && <td rowSpan="9"><img src={reservation.huesped.foto} style={{ height: "80%", width: "80%" }} alt="foto-huesped" /></td>}
+              <td colSpan="3" className="table-title">Informacion personal</td>
+            </tr>
+            <tr>
+              <td className="table-subtitle">Huesped</td>
+              <td className="table-subtitle">Tipo de doc. N° de doc.</td>
+            </tr>
+            <tr>
+              <td className="table-data">{reservation.huesped.nombre} {reservation.huesped.apellido}</td>
+              {incompleteReservation && <td className="table-data"><input style={{
+                width: "50px",
+                height: "25px",
+                marginRight: "20px"
+              }}
+                onChange={(e) => setTipoDocumento(e.target.value)}
+              /><input style={{
+                width: "100px",
+                height: "25px"
+              }}
+                onChange={(e) => setNumeroDocumento(e.target.value)}
+                /></td>}
+              {!incompleteReservation && <td className="table-data">{reservation.huesped.tipo} </td>}
+              {!incompleteReservation && <td className="table-data">{reservation.huesped.documento}</td>}
+            </tr>
+            <tr>
+              <td className="table-subtitle">Email</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td className="table-data">{reservation.huesped.email}</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td colSpan="2" className="table-title">Datos de reserva</td>
+            </tr>
+            <tr>
+              <td className="table-subtitle">Comienzo</td>
+              <td className="table-subtitle">Fin</td>
+            </tr>
+            <tr>
+              <td className="table-data">{reservation.inicio}</td>
+              <td className="table-data">{reservation.fin}</td>
+            </tr>
+            <tr>
+              <td className="table-subtitle">Estado</td>
+              {!incompleteReservation && <td className="table-subtitle">Habitacion</td>}
+            </tr>
+            <tr>
+              <td><div>{nroHabitacion && <button onClick={realizarCheckout} style={{
+                color: "dimgray",
+                backgroundColor: "lightgray",
+                border: "2px solid lightgray",
+                fontWeight: "bolder",
+                width: "325px",
+                height: "30px",
+                fontSize: "70%"
+              }}
+              >Realizar checkout</button>}</div></td>
+              <td className="table-data">{reservation.estado}</td>
+              <td>{!incompleteReservation && <input style={{
+                width: "50px",
+                height: "25px"
+              }}
+                onChange={(e) => setNumeroHabitacion(e.target.value)}
+              />}
+                {!incompleteReservation && <button onClick={asignarHabitacion} style={{
                   color: "dimgray",
                   backgroundColor: "lightgray",
                   border: "2px solid lightgray",
                   fontWeight: "bolder",
-                  width: "325px",
+                  width: "70px",
                   height: "30px",
-                  fontSize: "70%"
+                  fontSize: "70%",
+                  marginLeft: "5px"
                 }}
-                >Realizar checkout</button>}</div></td>
-                <td className="table-data">{reservation.estado}</td>
-                <td>{!incompleteReservation && <input style={{
-                  width: "50px",
-                  height: "25px"
+                >Asignar</button>}
+                {incompleteReservation && <button onClick={actualizarDatos} style={{
+                  color: "dimgray",
+                  backgroundColor: "lightgray",
+                  border: "2px solid lightgray",
+                  fontWeight: "bolder",
+                  width: "150px",
+                  height: "50px",
+                  fontSize: "70%",
+                  marginLeft: "5px"
                 }}
-                  onChange={(e) => setNumeroHabitacion(e.target.value)}
-                />}
-                  {!incompleteReservation && <button onClick={asignarHabitacion} style={{
-                    color: "dimgray",
-                    backgroundColor: "lightgray",
-                    border: "2px solid lightgray",
-                    fontWeight: "bolder",
-                    width: "70px",
-                    height: "30px",
-                    fontSize: "70%",
-                    marginLeft: "5px"
-                  }}
-                  >Asignar</button>}
-                  {incompleteReservation && <button onClick={actualizarDatos} style={{
-                    color: "dimgray",
-                    backgroundColor: "lightgray",
-                    border: "2px solid lightgray",
-                    fontWeight: "bolder",
-                    width: "150px",
-                    height: "50px",
-                    fontSize: "70%",
-                    marginLeft: "5px"
-                  }}
-                  >Actualizar datos</button>}</td>
-              </tr>
+                >Actualizar datos</button>}</td>
+            </tr>
 
-            </table>
-          }
-        </div>}
+          </table>
+        }
+      </div>}
 
-      </div>
-    )
-  };
-  export default Home;
+    </div>
+  )
+};
+export default Home;
