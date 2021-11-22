@@ -12,8 +12,13 @@ class InfoPhotoActivity : AppCompatActivity() {
 
         val siguiente      = findViewById<Button>(R.id.btn_next_register_three)
 
+        val tipo = getIntent().getExtras()?.getString("tipo");
+        val numero = getIntent().getExtras()?.getString("numero");
+
         siguiente.setOnClickListener{
             val layout = Intent(this, TakePhotoActivity::class.java )
+            layout.putExtra("tipo", tipo);
+            layout.putExtra("numero", numero);
             startActivity(layout)
         }
     }

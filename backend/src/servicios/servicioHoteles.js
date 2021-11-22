@@ -107,7 +107,7 @@ class ServicioHoteles {
     * @param  {String} documento El numero de docuemnto
     * @param  {Number} habitacion El numero de habitacion
     */
-    async actualizarReserva(id, codigo, estado, foto, tipo, documento, habitacion) {
+    async actualizarReserva(id, codigo, estado, foto, tipo, documento, habitacion, nombre, apellido) {
         var hotel = await this.buscarPorId(id)
         var reservaEncontrada = null        
         var index = 0
@@ -120,6 +120,8 @@ class ServicioHoteles {
                 if(reserva.codigo == codigo){
 
                     if(foto !== null){
+                        reserva.huesped.nombre = nombre
+                        reserva.huesped.apellido = apellido
                         reserva.huesped.foto = foto
                         reserva.huesped.tipo = tipo
                         reserva.huesped.documento = documento
