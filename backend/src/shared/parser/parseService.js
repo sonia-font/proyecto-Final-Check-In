@@ -1,45 +1,34 @@
-import fs from 'fs'
 import path from 'path'
-import formidable from 'formidable'
+import imageToBase64 from 'image-to-base64'
+import base64ToImage from 'base64-to-image'
+import crypto from 'crypto'
 
 class ParseService {    
 
-    async parseForm(req){
-        var self = this
-        return new Promise((resolve, reject) => {
-            try {
-                const form = new formidable.IncomingForm();
-    
-                form.parse(req, function(err, fields, files){
-                    var oldPath = files.image.filepath;
-                    var newPath = path.join('./src/uploads') + '/'+files.image.originalFilename
-                    var rawData = fs.readFileSync(oldPath)
-            
-                    self.uploadImage(newPath, rawData)  
-
-                    var datos = {
-                        tipo: fields.tipo,
-                        documento: fields.documento,
-                        foto: newPath
-                    } 
-                    
-                    resolve(datos)
-                })
-            } catch (err) {
-                reject(new Error('Error al subir la foto'))
-            }
-        })        
-    }    
-
-    async uploadImage(newPath, rawData){
-        fs.writeFile(newPath, rawData, function(err){
-            if(err) {
-                console.log(err)
-            } else {
-                console.log("Foto Guardada")
-            }
-        })
+    async convertToBase64(path){
+        try{
+            return imageToBase64(path)
+        } catch(er) {
+            console.log(er)
+        } 
     }
+
+    async convertToImage(baseString){
+        // Generate random string            
+        var seed = crypto.randomBytes(20)
+        var uniqueSHA1String = crypto.createHash('sha1').update(seed).digest('hex')
+        var uniqueRandomImageName = 'image-' + uniqueSHA1String
+
+        var imageType = 'png'
+        var newPath = path.join('./src/uploads/')
+        var optionalObj = {'fileName': uniqueRandomImageName, 'type': imageType}
+
+        var base64Str = "data:image/jpg;base64," + baseString
+            
+        base64ToImage(base64Str,newPath,optionalObj)
+
+        return newPath + uniqueRandomImageName + '.' + imageType
+    }  
 }
 
 export default ParseService

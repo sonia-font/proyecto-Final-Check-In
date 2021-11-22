@@ -18,7 +18,15 @@ const Login = () => {
     let idHotel = 0;
 
     const buttonLogin = async () => {
-        const response = await callLogin(email, password, idHotel);
+        var response
+
+        try{
+            response = await callLogin(email, password, idHotel);
+        } catch (er) {
+            console.log(er.message)
+            response = false
+        }
+        
         if (response) {
             history.push("/home")
         } else {
@@ -27,11 +35,16 @@ const Login = () => {
     };
 
     const searchHotels = async () => {
-        const responseHotels = await getHotels();
-        const hotels = responseHotels.map(function (hotel) {
-            return { value: hotel.id, label: hotel.nombre }
-        })
-        setHotels(hotels)
+        try{
+            const responseHotels = await getHotels();
+            const hotels = responseHotels.map(function (hotel) {
+                return { value: hotel.id, label: hotel.nombre }
+            })
+            setHotels(hotels)
+        }catch(er){
+            console.log(er.message)
+            showAlertNotification('', "No hay hoteles para mostrar", 'danger')
+        }        
     }
 
     useEffect(() => {
@@ -60,7 +73,7 @@ const Login = () => {
                 width: "200px"
             }}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder='Ingrese su usuario'
+                placeholder='Ingrese su email'
             />
             <Label text="Contraseña" />
             <div>
