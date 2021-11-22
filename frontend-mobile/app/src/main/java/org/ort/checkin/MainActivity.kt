@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         clickEntrar(entrar)
     }
 
+
+
     override fun onStart() {
         super.onStart()
         if(sessionVar) {
