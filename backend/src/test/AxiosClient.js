@@ -16,6 +16,11 @@ class AxiosClient {
         return await self.sendRequest({ url: this.url + '/hoteles', method: 'get' })
     }  
 
+    async updateReserva(idHotel, codReserva, data) {   
+        var self = this
+        return await self.sendRequest({ url: this.url + `/${idHotel}/${codReserva}/actualizar`, method: 'put', data: data })
+    } 
+
     async sendRequest(req) {
         try {
             return await axios(req)
