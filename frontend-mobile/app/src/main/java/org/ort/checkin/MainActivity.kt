@@ -11,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.delay
 import org.ort.checkin.com.ConectionApi
 import org.ort.checkin.SessionVariable.Companion.sessionVar
+import java.lang.NumberFormatException
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,8 +33,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if(sessionVar) {
-            setNextLayout()
+        if(SessionVariable.Companion.finalizado){
+            val layout = Intent(this, IddleActivity::class.java )
+            startActivity(layout)
+        }else{
+            if(sessionVar) {
+                setNextLayout()
+            }
         }
     }
 
@@ -44,20 +50,25 @@ class MainActivity : AppCompatActivity() {
             val cod_reserva = findViewById<TextView>(R.id.text_cod_reserva).text
             val email         = findViewById<TextView>(R.id.text_email).text
 
-            if(!email.isEmpty() && !email.isNullOrEmpty()) {
+            if(!email.isEmpty() && !cod_reserva.isNullOrEmpty()) {
 
-                validarUser(email.toString(), cod_reserva.toString().toInt())
-
-                if(true) {
-                    setNextLayout()
-                }else {
+                if(isNumeric(email.toString()) ||  !isNumeric(cod_reserva.toString())) {
                     err.visibility = View.VISIBLE
-                    err.text = "no hemos podido validar sus datos"
+                    err.text = getString(R.string.error_data)
+                }else {
+                    validarUser(email.toString(), cod_reserva.toString().toInt())
+
+                    if(sessionVar) {
+                        setNextLayout()
+                    }else {
+                        err.visibility = View.VISIBLE
+                        err.text = getString(R.string.error_data_invalid)
+                    }
                 }
 
             } else {
                 err.visibility = View.VISIBLE
-                err.text = "Tiene que llenar ambos campos"
+                err.text = getString(R.string.error_empty)
             }
         }
     }
@@ -72,4 +83,13 @@ class MainActivity : AppCompatActivity() {
         startActivity(layout)
     }
 
+    private fun isNumeric(cadena: String): Boolean {
+        val resultado: Boolean = try {
+            cadena.toInt()
+            true
+        } catch (excepcion: NumberFormatException) {
+            false
+        }
+        return resultado
+    }
 }

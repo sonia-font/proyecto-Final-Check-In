@@ -22,4 +22,12 @@ class InfoPhotoActivity : AppCompatActivity() {
             startActivity(layout)
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        if(SessionVariable.Companion.finalizado){
+            val layout = Intent(this, IddleActivity::class.java )
+            startActivity(layout)
+        }
+    }
 }

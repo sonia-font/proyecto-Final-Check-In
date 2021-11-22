@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">CheckIn</string>
+    <string-array name="tipo_document" >
+        <item>DNI</item>
+        <item>Libreta de enrolamiento</item>
+        <item>Pasaporte</item>
+    </string-array>
+    <string name="error_data">Error en tipo de datos</string>
+    <string name="error_empty">Llenar todos los campos por favor</string>
+    <string name="error_data_invalid">No hemos podido validar sus datos</string>
+    <string name="email">Email</string>
+    <string name="cod">Codigo Reserva</string>
+    <string name="entrar">Entrar</string>
+    <string name="numero_documento">Numero de Documento</string>
+    <string name="siguiente">Siguiente</string>
+    <string name="open_cam">Abrir camara</string>
 </resources>
