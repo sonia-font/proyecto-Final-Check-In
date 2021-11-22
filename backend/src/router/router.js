@@ -114,9 +114,8 @@ class Router {
         // Tiene que recibir un multipart/form-data con la foto, tipo y numero de documento
         router.put('/:idHotel/:codReserva/actualizar/foto', async(req, res, next) => {
             try {
-                console.log("llega")
                 var datos = await this.parseService.parseForm(req)
-                await this.servHoteles.actualizarReserva(req.params.idHotel, req.params.codReserva, datos.estado, datos.foto, datos.tipo, datos.documento, null)
+                await this.servHoteles.actualizarReserva(req.params.idHotel, req.params.codReserva, null, datos.foto, datos.tipo, datos.documento, null)
                 res.status(201).send({msg: "Reserva actualizada"})
             } catch(error) {
                 next(error)
