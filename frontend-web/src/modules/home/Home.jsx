@@ -22,16 +22,21 @@ const Home = () => {
   const searchRes = async () => {
     setNroReserva(true)
     if (codigoReserva === "") {
-      showAlertNotification('', "Usuario y/o contraseña incorrecta.", 'danger')
+      showAlertNotification('', "Debe ingresar un codigo de reserva", 'danger')
     } else {
-      const data = await searchReservation(idHotel, codigoReserva);
-      if (data && data.huesped.foto !== "") {
-        setReservation(data)
-        setIncompleteReservation(false)
-      } else {
-        setReservation(data)
-        setIncompleteReservation(true)
-      }
+      try{
+        const data = await searchReservation(idHotel, codigoReserva);
+        if (data && data.huesped.foto !== "") {
+          setReservation(data)
+          setIncompleteReservation(false)
+        } else {
+          setReservation(data)
+          setIncompleteReservation(true)
+        }
+      }catch(er){
+        console.log(er.message)
+        showAlertNotification('', "Reserva no encontrada", 'danger')
+      }      
     }
   };
 
