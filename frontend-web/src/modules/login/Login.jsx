@@ -13,9 +13,8 @@ const Login = () => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const [hotels, setHotels] = useState([]);
+    const [idHotel, setIdHotel] = useState("");
     const history = useHistory()
-
-    let idHotel = 0;
 
     const buttonLogin = async () => {
         var response
@@ -51,6 +50,11 @@ const Login = () => {
         searchHotels();
     }, [])
 
+    useEffect(() => {
+        localStorage.setItem("idHotel", idHotel);
+    }, [idHotel])
+
+
     return (
         <div style={{
             width: "100vw",
@@ -63,7 +67,7 @@ const Login = () => {
             // marginLeft:"18%",
             color: "black"
         }} >
-            <Dropdown options={hotels} placeholder="Seleccione un hotel" />
+            <Dropdown options={hotels} placeholder="Seleccione un hotel" onChange={(e) => setIdHotel(e.value)} />
             <Title className="title-container" />
             <Label text="Email" />
             <input style={{

@@ -9,7 +9,7 @@ import { showAlertNotification } from '../../shared/AlertNotification/AlertNotif
 const Home = () => {
   const [nroReserva, setNroReserva] = useState("");
   const [nroHabitacion, setNroHabitacion] = useState("");
-  const [incompleteReservation, setIncompleteReservation] = useState(false);
+  const [incompleteReservation, setIncompleteReservation] = useState("false");
   const [reservation, setReservation] = useState("");
   const [numeroDocumento, setNumeroDocumento] = useState("");
   const [tipoDocumento, setTipoDocumento] = useState("");
@@ -17,9 +17,10 @@ const Home = () => {
   const [imageUpload, setImageUpload] = useState("");
   const [numeroHabitacion, setNumeroHabitacion] = useState("");
 
-  let idHotel = 0;
+  let idHotel = localStorage.getItem("idHotel")
 
   const searchRes = async () => {
+    console.log("id hotel search: " +  idHotel)
     setNroReserva(true)
     if (codigoReserva === "") {
       showAlertNotification('', "Debe ingresar un codigo de reserva", 'danger')
