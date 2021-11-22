@@ -116,7 +116,7 @@ class Router {
             try {
                 console.log("llega")
                 var datos = await this.parseService.parseForm(req)
-                await this.servHoteles.actualizarReserva(req.params.idHotel, req.params.codReserva, datos.estado, datos.foto, datos.tipo, datos.documento, null, datos.nombre, datos.apellido)
+                await this.servHoteles.actualizarReserva(req.params.idHotel, req.params.codReserva, datos.estado, datos.foto, datos.tipo, datos.documento, null)
                 res.status(201).send({msg: "Reserva actualizada"})
             } catch(error) {
                 next(error)
