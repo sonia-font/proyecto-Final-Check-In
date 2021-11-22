@@ -1,0 +1,112 @@
+version: "3.5"
+services:
+  # Orion is the context broker
+  orion:
+    image: fiware/orion
+    hostname: orion
+    container_name: fiware-orion
+    depends_on:
+      - mongo-db
+    networks:
+      - default
+    expose:
+      - "1026"
+    ports:
+      - "1026:1026" # localhost:1026
+    command: -dbhost mongo-db -logLevel DEBUG -noCache
+    healthcheck:
+      test: curl --fail -s http://orion:1026/version || exit 1
+
+  # Draco is configured to write context data to MySQL
+  draco:
+    image: ging/fiware-draco:latest
+    hostname: draco
+    container_name: fiware-draco
+    depends_on:
+      - mongo-db
+    environment:
+        - NIFI_WEB_HTTP_PORT=9090
+    ports:
+      - "9090:9090" # localhost:9090
+      - "5050:5050"
+    healthcheck:
+      test: curl --fail -s http://draco:9099/nifi-api/system-diagnostics || exit 1
+
+  # Databases
+  mongo-db:
+    image: mongo:4.0
+    hostname: mongo-db
+    container_name: db-mongo
+    expose:
+      - "27017"
+    ports:
+      - 27018:27017 # localhost:27017 # localhost:27017
+    networks:
+      - default
+    command: --bind_ip_all --smallfiles
+    volumes:
+    - mongo-db:/data
+    healthcheck:
+      test: |
+        host=`hostname --ip-address || echo '127.0.0.1'`; 
+        mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1
+  # Postgres is our persistance DB
+  postgres-db:
+    image: postgres:11.14
+    hostname: postgres-db
+    container_name: db-postgres
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    networks:
+      - default
+    environment:
+      - "POSTGRES_PASSWORD=password"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_DB=postgres"
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+    # PGadmin to administrate Postgres
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    hostname: pg-admin
+    container_name: pgadmin
+    expose:
+      - "3100"
+    ports:
+      - "3100:80"
+    networks:
+      - default
+    environment:
+      - "PGADMIN_DEFAULT_EMAIL=user@domain.com"
+      - "PGADMIN_DEFAULT_PASSWORD=SuperSecret"
+      - "PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION=True"
+      - "PGADMIN_CONFIG_LOGIN_BANNER='Authorised users only!'"
+      - "PGADMIN_CONFIG_CONSOLE_LOG_LEVEL=10"
+
+  # Grafana for graphs
+  grafana:
+    hostname: grafana
+    container_name: grafana_inspira
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    networks:
+      - default
+    expose:
+      - "3000"
+    volumes:
+      - grafana-volume:/var/lib/grafana/data
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.19.100.0/24
+
+volumes:
+  mongo-db: ~
+  postgres-db: ~
+  grafana-volume: ~
