@@ -5,6 +5,7 @@ import Imagen from '../../assets/img/cr7.jpg'
 import '../home/home.css'
 import { searchReservation, updateReservation, selectRoom, deleteReservation } from '../../shared/Services/RequestService'
 import { showAlertNotification } from '../../shared/AlertNotification/AlertNotification'
+import { useHistory } from 'react-router-dom'
 
 const Home = () => {
   const [nroReserva, setNroReserva] = useState("");
@@ -16,11 +17,11 @@ const Home = () => {
   const [codigoReserva, setCodigoReserva] = useState("");
   const [imageUpload, setImageUpload] = useState("");
   const [numeroHabitacion, setNumeroHabitacion] = useState("");
+  const history = useHistory()
 
   let idHotel = localStorage.getItem("idHotel")
 
   const searchRes = async () => {
-    console.log("id hotel search: " +  idHotel)
     setNroReserva(true)
     if (codigoReserva === "") {
       showAlertNotification('', "Debe ingresar un codigo de reserva", 'danger')
@@ -35,11 +36,14 @@ const Home = () => {
           setIncompleteReservation(true)
         }
       }catch(er){
-        console.log(er.message)
         showAlertNotification('', "Reserva no encontrada", 'danger')
       }      
     }
   };
+
+  const signOff = () => {
+    history.push("/login")
+  }
 
   const actualizarDatos = async () => {
     if (codigoReserva === "" || idHotel === '' || imageUpload === "" || tipoDocumento === "" || numeroDocumento === "") {
@@ -71,6 +75,11 @@ const Home = () => {
   useEffect(() => {
     console.log(reservation);
   }, [reservation])
+
+  useEffect(() => {
+    setNumeroHabitacion("")
+
+  }, [])
 
   useEffect(() => {
     console.log(imageUpload);
@@ -128,6 +137,18 @@ const Home = () => {
           top: "20px"
         }}
         >Buscar</button>
+         <button onClick={signOff} style={{
+                  color: "dimgray",
+                  backgroundColor: "lightgray",
+                  border: "2px solid lightgray",
+                  fontWeight: "bolder",
+                  width: "150px",
+                  height: "50px",
+                  fontSize: "70%",
+                  marginLeft: "450px",
+                  marginTop:"20px"
+                }}
+                >Salir</button>
       </div>}
       {nroReserva && <div style={{
         width: "100vw",
@@ -185,7 +206,7 @@ const Home = () => {
             </tr>
             <tr>
               <td className="table-data">{reservation.huesped.nombre} {reservation.huesped.apellido}</td>
-              {incompleteReservation && <td className="table-data"><input style={{
+              {incompleteReservation && <td className="table-data"><input type="text" style={{
                 width: "50px",
                 height: "25px",
                 marginRight: "20px"
@@ -266,9 +287,22 @@ const Home = () => {
             </tr>
 
           </table>
+          
         }
-      </div>}
+                <button onClick={signOff} style={{
+                  color: "dimgray",
+                  backgroundColor: "lightgray",
+                  border: "2px solid lightgray",
+                  fontWeight: "bolder",
+                  width: "150px",
+                  height: "50px",
+                  fontSize: "70%",
+                  marginLeft: "5px",
+                  marginTop:"40px"
+                }}
+                >Salir</button>
 
+      </div>}
     </div>
   )
 };
