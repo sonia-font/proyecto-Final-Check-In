@@ -20,19 +20,19 @@ async function main(){
     const {data} = await client.getAll()
     console.log(data[0])
 
-    // TRAE UN BASE64 
-    let imagePath = path.join('./src/test/testImage/pintura.JPG')
-    let parser = new ParseService()
-    let testString = await parser.convertToBase64(imagePath)
+    // // TRAE UN BASE64 
+    // let imagePath = path.join('./src/test/testImage/pintura.JPG')
+    // let parser = new ParseService()
+    // let testString = await parser.convertToBase64(imagePath)
 
-    var datos = {
-        "foto": testString,
-        "tipo": "DNI",
-        "documento": "36359637",
-        "habitacion": "12"
-    }
+    // var datos = {
+    //     "foto": testString,
+    //     "tipo": "DNI",
+    //     "documento": "36359637",
+    //     "habitacion": "12"
+    // }
 
-    const dir = await client.updateReserva(data[0].id, data[0].reservas[0].codigo, datos)
+    // const dir = await client.updateReserva(data[0].id, data[0].reservas[0].codigo, datos)
 
 
     const cron = new envioMailCron();
