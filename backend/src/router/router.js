@@ -114,10 +114,13 @@ class Router {
         })               
 
         // Actualiza la reserva
-        router.put('/:idHotel/:codReserva/actualizar',async (req, res, next) =>{
+        // Caso mobile: pasa tipo, documento y foto en base64
+        // Caso web feliz: pasa habitacion
+        // Caso web no feliz: pasa tipo, documento, foto en base64 y habitacion
+        router.put('/:idHotel/:codReserva/actualizar/:isWeb',async (req, res, next) =>{
             try {
-                req.body.foto = await this.parseService.convertToImage(req.body.foto)
-                await this.servHoteles.actualizarReserva(req.params.idHotel, req.params.codReserva, null, req.body)
+                //req.body.foto = await this.parseService.convertToImage(req.body.foto)
+                await this.servHoteles.actualizarReserva(req.params.idHotel, req.params.codReserva, req.params.isWeb, req.body, null)
                 res.status(201).send({msg: "Reserva actualizada"})
             } catch(error) {
                 next(error)
