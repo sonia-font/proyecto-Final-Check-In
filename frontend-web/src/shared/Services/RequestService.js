@@ -19,19 +19,9 @@ export const searchReservation = async (idHotel, codReserva) => {
   return res.data;
 };
 
-export const updateReservation = async (
-  idHotel,
-  codigoReserva,
-  imageUpload,
-  tipoDocumento,
-  numeroDocumento
-) => {
+export const updateReservation = async (idHotel, codigoReserva, imageUpload, tipoDocumento, numeroDocumento) => {
   let url = `http://localhost:8000/api/${idHotel}/${codigoReserva}/actualizar/foto`;
-  const body = {
-    image: imageUpload,
-    tipo: tipoDocumento,
-    documento: numeroDocumento,
-  };
+  const body = { image: imageUpload, tipo: tipoDocumento, documento: numeroDocumento };
   const res = await Axios.put(url, body);
   return res.data;
 };

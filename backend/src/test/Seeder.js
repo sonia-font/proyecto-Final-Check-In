@@ -4,16 +4,31 @@ import Empleado from '../negocio/modelos/empleado.js'
 import Reserva from '../negocio/modelos/reserva.js'
 import Hotel from '../negocio/modelos/hotel.js'
 import Estado from '../negocio/modelos/estado.js'
+import ParseService from '../shared/parser/parseService.js'
+import path from 'path'
 
 class Seeder {
 
     constructor(){
         this.servHoteles = new ServicioHoteles()  
+        this.testPhoto = ""
     }
 
     async run(){
+        await this.loadPhotos()
         var hotel = await this.getHotel()
         this.servHoteles.agregar(hotel)
+    }
+
+    async loadPhotos(){       
+        let imagePath = path.join('./src/test/testImage/gilberto.png')
+        let parser = new ParseService()
+        
+        await parser.convertToBase64(imagePath)        
+        .then(gilbertoBase64 => { 
+            this.testPhoto = gilbertoBase64
+        })
+        .catch(error => console.log(error))
     }
 
     async getHotel(){
@@ -48,40 +63,47 @@ class Seeder {
             nombre: 'Gilberto',
             apellido: 'Materano',
             email: 'gmater@gmail.com',
+            foto: this.testPhoto,
+            tipo: 'DNI',
+            documento: '12345678'
         })
     
         const huesped4 = new Huesped({
             nombre: 'Daniel',
             apellido: 'Getti',
             email: 'dg@gmail.com',
+            foto: this.testPhoto,
+            tipo: 'DNI',
+            documento: '12345678'
         })
     
         const reserva1 = new Reserva({
             inicio: new Date(2021,10,18,17,21,0),
             fin: new Date(2021,10,31),
             huesped: huesped1,
-            estado: Estado.INACTIVO,
+            estado: Estado.INACTIVO
         })
     
         const reserva2 = new Reserva({
-            inicio: new Date(2021,10,23),
-            fin: new Date(2021,10,30),
+            inicio: new Date(2021,11,28),
+            fin: new Date(2021,12,30),
             huesped: huesped2,
-            estado: Estado.INACTIVO,
+            estado: Estado.INICIADO
         })
     
         const reserva3 = new Reserva({
-            inicio: new Date(2021,10,22),
-            fin: new Date(2021,10,29),
+            inicio: new Date(2021,11,27),
+            fin: new Date(2021,12,29),
             huesped: huesped3,
-            estado: Estado.INACTIVO,
+            estado: Estado.COMPLETO
         })
     
         const reserva4 = new Reserva({
             inicio: new Date(2021,10,21),
             fin: new Date(2021,10,28),
             huesped: huesped4,
-            estado: Estado.INACTIVO,
+            estado: Estado.COMPLETO,
+            habitacion: 1
         })
     
         const dir = process.cwd()

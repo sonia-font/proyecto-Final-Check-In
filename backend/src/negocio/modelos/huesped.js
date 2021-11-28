@@ -3,9 +3,9 @@ class Huesped {
         this.nombre = data.nombre
         this.apellido = data.apellido
         this.email = data.email
-        this.foto = ""
-        this.tipo = ""
-        this.documento = ""
+        this.foto = data.foto?? ""
+        this.tipo = data.tipo?? ""
+        this.documento = data.documento?? ""
     }
 }
 

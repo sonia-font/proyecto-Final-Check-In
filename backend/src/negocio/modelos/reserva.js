@@ -7,8 +7,8 @@ class Reserva {
         this.inicio = data.inicio
         this.fin = data.fin
         this.huesped = data.huesped
-        this.estado = Estado.INACTIVO 
-        this.habitacion = null
+        this.estado = data.estado?? Estado.INACTIVO 
+        this.habitacion = data.habitacion?? null
         this.codigo = nextId++     
     }
 }

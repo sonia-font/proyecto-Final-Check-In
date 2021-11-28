@@ -105,10 +105,11 @@ class ServicioHoteles {
     * Devuelve una reserva actualizada
     * @param  {Number} id El id del hotel a buscar
     * @param  {Number} codigo El codigo de la reserva a buscar
-    * @param  {Estado} estado El codigo de la reserva a buscar
+    * @param  {Boolean} isWeb Si se esta mandando por la web o mobile
     * @param  {Object} data Contiene estado, foto, tipo, documento y habitacion
+    * @param  {Estado} estado El estado a modificar
     */
-    async actualizarReserva(id, codigo, estado, data) {
+    async actualizarReserva(id, codigo, isWeb, data, estado) {
         var hotel = await this.buscarPorId(id)
         var reservaEncontrada = null        
         var index = 0
@@ -121,16 +122,35 @@ class ServicioHoteles {
                 if(reserva.codigo == codigo){
 
                     if(estado === null){
-                        reserva.huesped.foto = data.foto
-                        reserva.huesped.tipo = data.tipo
-                        reserva.huesped.documento = data.documento
-                        reserva.habitacion = data.habitacion?? ""
-                        reserva.estado = Estado.COMPLETO
-                    } 
-                    
-                    if (estado !== null){
+
+                        //Update hecho por web
+                        if(isWeb){
+                            
+                            if(data.documento){
+                                //camino no feliz
+                                reserva.huesped.foto = data.foto
+                                reserva.huesped.tipo = data.tipo
+                                reserva.huesped.documento = data.documento
+                                reserva.habitacion = data.habitacion
+                                reserva.estado = Estado.COMPLETO
+                            }else{
+                                //camino feliz
+                                reserva.habitacion = data.habitacion
+                            }                            
+
+                        }else{
+                            //Update hecho por app mobile
+                            reserva.huesped.foto = data.foto
+                            reserva.huesped.tipo = data.tipo
+                            reserva.huesped.documento = data.documento
+                            reserva.estado = Estado.COMPLETO
+                        }
+                        
+                    }else{
+                        //Update interno
                         reserva.estado = estado   
                     }
+
                     this.fiwareService.modifyEntity(hotel.id,reserva.codigo,reserva.estado)
                     this.hotelesManager.updateById(hotel)
                     reservaEncontrada = reserva

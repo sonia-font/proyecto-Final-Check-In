@@ -19,11 +19,8 @@ const Inicio = () => {
       backgroundRepeat: "no-repeat",
       textAlign: "center",
       fontSize: "30px",
-      color: "black",
-    }}>
-      <div style={{
-        paddingTop: "450px"
-      }}>
+      color: "black" }}>
+      <div style={{ paddingTop: "450px"}}>
         <Label text="¡Bienvenido!" />
         <button onClick={continueToLogin} style={{
           color: "dimgray",
@@ -33,8 +30,7 @@ const Inicio = () => {
           fontWeight: "bolder",
           width: "300px",
           height: "50px",
-          fontSize: "70%"
-        }}
+          fontSize: "70%" }}
         >Check In</button>
       </div>
     </div>

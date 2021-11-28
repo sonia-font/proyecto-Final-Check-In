@@ -17,19 +17,21 @@ const Login = () => {
     const history = useHistory()
 
     const buttonLogin = async () => {
-        var response
-
-        try{
-            response = await callLogin(email, password, idHotel);
-        } catch (er) {
-            console.log(er.message)
-            response = false
-        }
+        let response;
         
-        if (response) {
-            history.push("/home")
-        } else {
-            showAlertNotification('', "Usuario y/o contraseña incorrecta.", 'danger')
+        try{
+            if(idHotel === ""){
+                showAlertNotification('', "Debe seleccionar un hotel.", 'danger')
+            } else if(email !== "" && password !== ""){
+                response = await callLogin(email, password, idHotel);
+                if (response) {
+                    history.push("/home")
+                }
+            } else {
+                showAlertNotification('', "Email y/o contraseña incorrecta.", 'danger')
+            }
+        } catch (er) {
+            response = false
         }
     };
 
@@ -41,7 +43,6 @@ const Login = () => {
             })
             setHotels(hotels)
         }catch(er){
-            console.log(er.message)
             showAlertNotification('', "No hay hoteles para mostrar", 'danger')
         }        
     }
@@ -64,7 +65,6 @@ const Login = () => {
             backgroundRepeat: "no-repeat",
             textAlign: "center",
             fontSize: "30px",
-            // marginLeft:"18%",
             color: "black"
         }} >
             <Dropdown options={hotels} placeholder="Seleccione un hotel" onChange={(e) => setIdHotel(e.value)} />
