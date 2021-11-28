@@ -57,7 +57,7 @@ class Seeder {
         })
     
         const reserva1 = new Reserva({
-            inicio: new Date(2021,10,18),
+            inicio: new Date(2021,10,18,17,21,0),
             fin: new Date(2021,10,31),
             huesped: huesped1,
             estado: Estado.INACTIVO,

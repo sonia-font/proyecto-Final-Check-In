@@ -20,8 +20,9 @@ class ServicioHoteles {
     async agregar(hotel) {
         try{    
             await this.hotelesManager.add(hotel)
+            this.fiwareService.addEntity(hotel)
         } catch (er) {
-            throw new Error("No se pudo agregar al hotel. Posiblemente falten datos. ")
+            throw new Error("No se pudo agregar al hotel.")
         }          
     }
 

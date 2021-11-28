@@ -11,7 +11,7 @@ class AxiosFiware {
             "content-type":"application/json",
         }
         hotel.reservas.forEach(reserva => {
-        const fiwareReservaId=`checkIn:hotel${hotel.id}:reserva${reserva.codigo}`
+        const fiwareReservaId=`urn:ngsi-ld:Reserva:${hotel.id}${reserva.codigo}`
         var body = {
             id:fiwareReservaId,
             type:"Reserva",
@@ -30,7 +30,7 @@ class AxiosFiware {
             fechaCambio:{
                 "type":"DateTime",
                 "value":reserva.inicio,
-            },
+            }
         }
         body = JSON.stringify(body)
         axios.post(this.url,body,{
@@ -45,7 +45,7 @@ class AxiosFiware {
         }
         const date = Date.now()
 
-        const reservaAModificar=`${this.url}/checkIn:hotel${hotelId}:reserva${reservaid}/attrs`
+        const reservaAModificar=`${this.url}/urn:ngsi-ld:Reserva:${hotelId}${reservaid}/attrs`
         var body = {
             estadoReserva:{
                 type:"text",
