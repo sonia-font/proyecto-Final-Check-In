@@ -20,5 +20,5 @@ export const showAlertNotification = (
   title = null,
   message,
   type = "info",
-  time = 3000
+  time = 5000
 ) => showNotification(title, message, type, time);
