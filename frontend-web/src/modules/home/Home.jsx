@@ -16,15 +16,31 @@ const Home = () => {
   const [numeroDocumento, setNumeroDocumento] = useState("");
   const [tipoDocumento, setTipoDocumento] = useState("");
   const [codigoReserva, setCodigoReserva] = useState("");
-  const [imageUpload, setImageUpload] = useState("");
   const [numeroHabitacion, setNumeroHabitacion] = useState("");
-  const [imageToSend, setImageToSend] = useState("");
+  const [file, setFile] = useState(null);
+  const [base64URL, setBase64] = useState("");
   
   const history = useHistory()
 
   let idHotel = localStorage.getItem("idHotel")      
   let data = "";
   const tiposDocumento = [{ "value": 0, "label": "DNI" }]
+
+  const getBase64 = async (file) => {
+    return new Promise(resolve => {
+      let baseURL = "";
+      // Make new FileReader
+      let reader = new FileReader();
+
+      // Convert the file to base64 text
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        baseURL = reader.result;
+        console.log(baseURL);
+        resolve(baseURL);
+      };
+    });
+  }
 
   const searchRes = async () => {
     setNroReserva(true)
@@ -52,12 +68,12 @@ const Home = () => {
   }
 
   const actualizarDatos = async () => {
-    if ((imageToSend === "" || tipoDocumento === "" || numeroDocumento === "" || numeroHabitacion === "") && reservation.estado === "iniciado") {
+    if ((codigoReserva === "" || idHotel === '' || base64URL === "" || tipoDocumento === "" || numeroDocumento === "" || numeroHabitacion === "") && reservation.estado === "iniciado") {
       showAlertNotification('', "Para actualizar debe ingresar todos los datos.", 'danger')
     }else if (numeroHabitacion === "" && reservation.estado === "completo"){
       showAlertNotification('', "Para actualizar debe ingresar el número de habitación.", 'danger')
     } else {
-      const data = await updateReservation(idHotel, codigoReserva, imageToSend, tipoDocumento, numeroDocumento, numeroHabitacion, reservation.estado);
+      const data = await updateReservation(idHotel, codigoReserva, base64URL, tipoDocumento, numeroDocumento, numeroHabitacion, reservation.estado);
       showAlertNotification('', data.msg, 'success')
     }
     searchRes();
@@ -87,50 +103,13 @@ const Home = () => {
     newDate = arrayDate[2] + "-" + arrayDate[1] + "-" + arrayDate[0];
     return newDate
   }
-
-  // const getBase64 = (file) => {
-  //   return new Promise(resolve => {
-  //     let fileInfo;
-  //     let baseURL = "";
-  //     // Make new FileReader
-  //     let reader = new FileReader();
-
-  //     // Convert the file to base64 text
-  //     reader.readAsDataURL(file);
-
-  //     // on reader load somthing...
-  //     reader.onload = () => {
-  //       // Make a fileInfo Object
-  //       console.log("Called", reader);
-  //       baseURL = reader.result;
-  //       console.log(baseURL);
-  //       resolve(baseURL);
-  //     };
-  //     console.log(fileInfo);
-  //   });
-  // };
-
-
+  
   useEffect(() => {
   }, [reservation])
 
   useEffect(() => {
-  }, [imageToSend])
-
-  useEffect(() => {
     setNumeroHabitacion("")
   }, [])
-
-  useEffect(() => {
-    // getBase64(imageUpload).then(result => {
-    //   imageUpload["base64"] = result;
-    //   console.log("File Is", imageUpload);
-    //   this.setState({
-    //     base64URL: result,
-    //     imageUpload
-    //   });
-    // })
-  }, [imageUpload])
 
   useEffect(() => {
   }, [numeroHabitacion])
@@ -239,14 +218,22 @@ const Home = () => {
             fontSize: "medium"
           }}>
             <tr>
-              {reservation.estado === "iniciado" && <td rowSpan="9"><img src={Imagen} style={{ height: "80%", width: "80%" }} alt="foto-huesped" /><input type="file" name="file" onChange={(e) => setImageUpload(e.target.files[0])} /></td>}
+              {reservation.estado === "iniciado" && <td rowSpan="9"><img src={Imagen} style={{ height: "80%", width: "80%" }} alt="foto-huesped" />{reservation.estado != "inactivo" && <input type="file" name="file" onChange={(e) => {
+                setFile(e.target.files[0]);
+                getBase64(file)
+                .then(result => {
+                  setBase64(result);
+                })
+                .catch(err => {
+                  console.log(err)
+                })}} />}</td>}
               {reservation.estado === "inactivo" && <td rowSpan="9"><img src={Imagen} style={{ height: "80%", width: "80%" }} alt="foto-huesped" /></td>}
               {!incompleteReservation && <td rowSpan="9"><img src={`data:image/jpeg;base64,${reservation.huesped.foto}`} style={{ height: "80%", width: "80%" }} alt="foto-huesped" /></td>}
-              <td colSpan="3" className="table-title">Informacion personal</td>
+              <td colSpan="2" className="table-title">Informacion personal</td>
             </tr>
             <tr>
               <td className="table-subtitle">Huesped</td>
-              <td className="table-subtitle">Tipo de doc. N° de doc.</td>
+              <td className="table-subtitle">Tipo y nro de documento</td>
             </tr>
             <tr>
               <td className="table-data">{reservation.huesped.nombre} {reservation.huesped.apellido}</td>
@@ -257,8 +244,9 @@ const Home = () => {
               }}
                 onChange={(e) => setNumeroDocumento(e.target.value)}
                 /></td>}
-              {!incompleteReservation && <td className="table-data">{reservation.huesped.tipo} </td>}
-              {!incompleteReservation && <td className="table-data">{reservation.huesped.documento}</td>}
+              {!incompleteReservation || reservation.estado != "inactivo" && <td className="table-data">{reservation.huesped.tipo} </td>}
+              {!incompleteReservation || reservation.estado != "inactivo" && <td className="table-data">{reservation.huesped.documento}</td>}
+              {!incompleteReservation || reservation.estado == "inactivo" && <td className="table-data">-</td>}
             </tr>
             <tr>
               <td className="table-subtitle">Email</td>
@@ -323,7 +311,8 @@ const Home = () => {
                   fontSize: "70%",
                   marginTop:"10px"
                 }}
-                >Actualizar datos</button>}</td>
+                >Actualizar datos</button>}{!incompleteReservation || reservation.estado == "inactivo" && <td className="table-data">-</td>}</td>
+                
             </tr>
 
           </table>
