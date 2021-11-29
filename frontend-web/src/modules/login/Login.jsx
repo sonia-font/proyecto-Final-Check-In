@@ -53,6 +53,7 @@ const Login = () => {
 
     useEffect(() => {
         localStorage.setItem("idHotel", idHotel);
+        console.log(hotels)
     }, [idHotel])
 
 

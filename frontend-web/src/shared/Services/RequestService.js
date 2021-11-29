@@ -19,16 +19,15 @@ export const searchReservation = async (idHotel, codReserva) => {
   return res.data;
 };
 
-export const updateReservation = async (idHotel, codigoReserva, imageUpload, tipoDocumento, numeroDocumento) => {
-  let url = `http://localhost:8000/api/${idHotel}/${codigoReserva}/actualizar/foto`;
-  const body = { image: imageUpload, tipo: tipoDocumento, documento: numeroDocumento };
+export const updateReservation = async (idHotel, codigoReserva, imageToSend, tipoDocumento, numeroDocumento, numeroHabitacion, estado) => {
+  let body;
+  if(estado === "iniciado"){
+    body = { image: imageToSend, tipo: tipoDocumento, documento: numeroDocumento, habitacion: numeroHabitacion };
+  } else{
+    body = {habitacion: numeroHabitacion}
+  }
+  let url = `http://localhost:8000/api/${idHotel}/${codigoReserva}/actualizar/true`;
   const res = await Axios.put(url, body);
-  return res.data;
-};
-
-export const selectRoom = async (numeroHabitacion, codigoReserva, idHotel) => {
-  let url = `http://localhost:8000/api/${idHotel}/${codigoReserva}/actualizar/${numeroHabitacion}`;
-  const res = await Axios.put(url);
   return res.data;
 };
 
