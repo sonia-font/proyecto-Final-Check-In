@@ -19,7 +19,6 @@ const Home = () => {
   const [numeroHabitacion, setNumeroHabitacion] = useState("");
   const [file, setFile] = useState(null);
   const [base64URL, setBase64] = useState("");
-  const [imagen, setImagen] = useState(Imagen);
   
   const history = useHistory()
 
@@ -219,17 +218,16 @@ const Home = () => {
             fontSize: "medium"
           }}>
             <tr>
-              {reservation.estado === "iniciado" && <td rowSpan="9"><img src={imagen} style={{ height: "80%", width: "80%" }} alt="foto-huesped" />{reservation.estado != "inactivo" && <input type="file" name="file" onChange={(e) => {
+              {reservation.estado === "iniciado" && <td rowSpan="9"><img src={Imagen} style={{ height: "80%", width: "80%" }} alt="foto-huesped" />{reservation.estado != "inactivo" && <input type="file" name="file" onChange={(e) => {
                 setFile(e.target.files[0]);
                 getBase64(file)
                 .then(result => {
                   setBase64(result);
-                  setImagen(result);
                 })
                 .catch(err => {
                   console.log(err)
                 })}} />}</td>}
-              {reservation.estado === "inactivo" && <td rowSpan="9"><img src={imagen} style={{ height: "80%", width: "80%" }} alt="foto-huesped" /></td>}
+              {reservation.estado === "inactivo" && <td rowSpan="9"><img src={Imagen} style={{ height: "80%", width: "80%" }} alt="foto-huesped" /></td>}
               {!incompleteReservation && <td rowSpan="9"><img src={`data:image/jpeg;base64,${reservation.huesped.foto}`} style={{ height: "80%", width: "80%" }} alt="foto-huesped" /></td>}
               <td colSpan="2" className="table-title">Informacion personal</td>
             </tr>

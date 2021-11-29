@@ -22,7 +22,7 @@ export const searchReservation = async (idHotel, codReserva) => {
 export const updateReservation = async (idHotel, codigoReserva, imageToSend, tipoDocumento, numeroDocumento, numeroHabitacion, estado) => {
   let body;
   if(estado === "iniciado"){
-    body = { image: imageToSend, tipo: tipoDocumento, documento: numeroDocumento, habitacion: numeroHabitacion };
+    body = { foto: imageToSend, tipo: tipoDocumento, documento: numeroDocumento, habitacion: numeroHabitacion };
   } else{
     body = {habitacion: numeroHabitacion}
   }
