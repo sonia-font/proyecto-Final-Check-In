@@ -15,14 +15,31 @@ const Home = () => {
   const [numeroDocumento, setNumeroDocumento] = useState("");
   const [tipoDocumento, setTipoDocumento] = useState("");
   const [codigoReserva, setCodigoReserva] = useState("");
-  const [imageUpload, setImageUpload] = useState("");
   const [numeroHabitacion, setNumeroHabitacion] = useState("");
-  const [imageToSend, setImageToSend] = useState("");
+  const [file, setFile] = useState(null);
+  const [base64URL, setBase64] = useState("");
+  const [imagen, setImagen] = useState(Imagen);
   
   const history = useHistory()
 
   let idHotel = localStorage.getItem("idHotel")      
   let data = "";
+
+  const getBase64 = async (file) => {
+    return new Promise(resolve => {
+      let baseURL = "";
+      // Make new FileReader
+      let reader = new FileReader();
+
+      // Convert the file to base64 text
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        baseURL = reader.result;
+        console.log(baseURL);
+        resolve(baseURL);
+      };
+    });
+  }
 
   const searchRes = async () => {
     setNroReserva(true)
@@ -50,10 +67,10 @@ const Home = () => {
   }
 
   const actualizarDatos = async () => {
-    if (codigoReserva === "" || idHotel === '' || imageToSend === "" || tipoDocumento === "" || numeroDocumento === "") {
+    if (codigoReserva === "" || idHotel === '' || base64URL === "" || tipoDocumento === "" || numeroDocumento === "") {
       showAlertNotification('', "Para actualizar debe ingresar todos los datos.", 'danger')
     } else {
-      const data = await updateReservation(idHotel, codigoReserva, imageToSend, tipoDocumento, numeroDocumento);
+      const data = await updateReservation(idHotel, codigoReserva, base64URL, tipoDocumento, numeroDocumento);
       showAlertNotification('', data.msg, 'success')
     }
     searchRes();
@@ -83,50 +100,13 @@ const Home = () => {
     newDate = arrayDate[2] + "-" + arrayDate[1] + "-" + arrayDate[0];
     return newDate
   }
-
-  // const getBase64 = (file) => {
-  //   return new Promise(resolve => {
-  //     let fileInfo;
-  //     let baseURL = "";
-  //     // Make new FileReader
-  //     let reader = new FileReader();
-
-  //     // Convert the file to base64 text
-  //     reader.readAsDataURL(file);
-
-  //     // on reader load somthing...
-  //     reader.onload = () => {
-  //       // Make a fileInfo Object
-  //       console.log("Called", reader);
-  //       baseURL = reader.result;
-  //       console.log(baseURL);
-  //       resolve(baseURL);
-  //     };
-  //     console.log(fileInfo);
-  //   });
-  // };
-
-
+  
   useEffect(() => {
   }, [reservation])
 
   useEffect(() => {
-  }, [imageToSend])
-
-  useEffect(() => {
     setNumeroHabitacion("")
   }, [])
-
-  useEffect(() => {
-    // getBase64(imageUpload).then(result => {
-    //   imageUpload["base64"] = result;
-    //   console.log("File Is", imageUpload);
-    //   this.setState({
-    //     base64URL: result,
-    //     imageUpload
-    //   });
-    // })
-  }, [imageUpload])
 
   useEffect(() => {
   }, [numeroHabitacion])
@@ -235,17 +215,26 @@ const Home = () => {
             fontSize: "large"
           }}>
             <tr>
-              {incompleteReservation && <td rowSpan="9"><img src={Imagen} style={{ height: "80%", width: "80%" }} alt="foto-huesped" /><input type="file" name="file" onChange={(e) => setImageUpload(e.target.files[0])} /></td>}
+              {incompleteReservation && <td rowSpan="9"><img src={imagen} style={{ height: "80%", width: "80%" }} alt="foto-huesped" />{reservation.estado != "inactivo" && <input type="file" name="file" onChange={(e) => {
+                setFile(e.target.files[0]);
+                getBase64(file)
+                .then(result => {
+                  setBase64(result);
+                  setImagen(result);
+                })
+                .catch(err => {
+                  console.log(err)
+                })}} />}</td>}
               {!incompleteReservation && <td rowSpan="9"><img src={`data:image/jpeg;base64,${reservation.huesped.foto}`} style={{ height: "80%", width: "80%" }} alt="foto-huesped" /></td>}
-              <td colSpan="3" className="table-title">Informacion personal</td>
+              <td colSpan="2" className="table-title">Informacion personal</td>
             </tr>
             <tr>
               <td className="table-subtitle">Huesped</td>
-              <td className="table-subtitle">Tipo de doc. N° de doc.</td>
+              <td className="table-subtitle">Tipo y nro de documento</td>
             </tr>
             <tr>
               <td className="table-data">{reservation.huesped.nombre} {reservation.huesped.apellido}</td>
-              {incompleteReservation && <td className="table-data"><input type="text" style={{
+              {incompleteReservation && reservation.estado != "inactivo" && <td className="table-data"><input type="text" style={{
                 width: "50px",
                 height: "25px",
                 marginRight: "20px"
@@ -257,8 +246,9 @@ const Home = () => {
               }}
                 onChange={(e) => setNumeroDocumento(e.target.value)}
                 /></td>}
-              {!incompleteReservation && <td className="table-data">{reservation.huesped.tipo} </td>}
-              {!incompleteReservation && <td className="table-data">{reservation.huesped.documento}</td>}
+              {!incompleteReservation || reservation.estado != "inactivo" && <td className="table-data">{reservation.huesped.tipo} </td>}
+              {!incompleteReservation || reservation.estado != "inactivo" && <td className="table-data">{reservation.huesped.documento}</td>}
+              {!incompleteReservation || reservation.estado == "inactivo" && <td className="table-data">-</td>}
             </tr>
             <tr>
               <td className="table-subtitle">Email</td>
@@ -281,7 +271,7 @@ const Home = () => {
             </tr>
             <tr>
               <td className="table-subtitle">Estado</td>
-              {!incompleteReservation && <td className="table-subtitle">Habitacion</td>}
+              <td className="table-subtitle">Habitacion</td>
             </tr>
             <tr>
               <td><div>{nroHabitacion && <button onClick={realizarCheckout} style={{
@@ -312,7 +302,7 @@ const Home = () => {
                   marginLeft: "5px"
                 }}
                 >Asignar</button>}
-                {incompleteReservation && <button onClick={actualizarDatos} style={{
+                {incompleteReservation && reservation.estado != "inactivo" && <button onClick={actualizarDatos} style={{
                   color: "dimgray",
                   backgroundColor: "lightgray",
                   border: "2px solid lightgray",
@@ -322,7 +312,8 @@ const Home = () => {
                   fontSize: "70%",
                   marginLeft: "5px"
                 }}
-                >Actualizar datos</button>}</td>
+                >Actualizar datos</button>}{!incompleteReservation || reservation.estado == "inactivo" && <td className="table-data">-</td>}</td>
+                
             </tr>
 
           </table>
