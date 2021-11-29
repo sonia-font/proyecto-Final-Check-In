@@ -12,6 +12,10 @@ class AxiosFiware {
         }
         hotel.reservas.forEach(reserva => {
         const fiwareReservaId=`urn:ngsi-ld:Reserva:${hotel.id}${reserva.codigo}`
+        const options = {
+            dateStyle: 'medium',
+            timeStyle: 'medium'
+          }
         var body = {
             id:fiwareReservaId,
             type:"Reserva",
@@ -24,12 +28,12 @@ class AxiosFiware {
                 value:reserva.estado
             },
             inicioReserva:{
-                type:"DateTime",
-                value:reserva.inicio,
+                type:"text",
+                value: new Date(reserva.inicio).toLocaleString("es-AR", options),
             },
             fechaCambio:{
-                "type":"DateTime",
-                "value":reserva.inicio,
+                "type":"text",
+                "value":new Date(reserva.inicio).toLocaleString("es-AR", options),
             }
         }
         body = JSON.stringify(body)
@@ -43,17 +47,20 @@ class AxiosFiware {
         const headers = {
             "content-type":"application/json",
         }
-        const date = Date.now()
 
         const reservaAModificar=`${this.url}/urn:ngsi-ld:Reserva:${hotelId}${reservaid}/attrs`
+        const options = {
+            dateStyle: 'medium',
+            timeStyle: 'medium'
+          }
         var body = {
             estadoReserva:{
                 type:"text",
                 value:estado
             },
             fechaCambio:{
-                "type":"DateTime",
-                "value":new Date(),
+                "type":"text",
+                "value":new Date().toLocaleString("es-AR", options),
             },
         }
         body = JSON.stringify(body)

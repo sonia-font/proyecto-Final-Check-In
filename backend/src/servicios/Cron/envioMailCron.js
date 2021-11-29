@@ -1,11 +1,13 @@
 import cron from 'node-cron';
 import ServicioHoteles from '../servicioHoteles.js';
+import EmailService from '../../shared/mails/emailService.js';
 
 
 class envioMailCron {
 
     constructor() {
         this.servHoteles = new ServicioHoteles();
+        this.emailService = new EmailService();
     }
 
     /**
@@ -14,7 +16,7 @@ class envioMailCron {
     * 
     */
     correr(){
-        cron.schedule('* */30 * * * *', async() => {
+        cron.schedule('*/1 * * * * *', async() => {
             //get all hoteles
             let hoteles = await this.servHoteles.buscarTodos();
 
@@ -32,7 +34,7 @@ class envioMailCron {
 
                             if(diffTiempo <= 24) {
                                 await this.servHoteles.actualizarReserva(hotelId, reserva.codigo, "iniciado", reserva.huesped.foto, reserva.huesped.tipo, reserva.huesped.documento, reserva.habitacion)
-                                //se envia mail
+                                await this.emailService.sendCheckIn(reserva.huesped.email,reserva.codigo,reserva.huesped.nombre,hotel.nombre,reserva.inicio)
                             }
 
                         }
@@ -43,7 +45,6 @@ class envioMailCron {
 
                             if(diffTiempo <= 24) {
                                 await this.servHoteles.actualizarReserva(hotelId, reserva.codigo, "finalizado", reserva.huesped.foto, reserva.huesped.tipo, reserva.huesped.documento, reserva.habitacion)
-                                //se envia mail
                             }
                         }
                     })

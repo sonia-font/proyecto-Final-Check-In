@@ -191,13 +191,12 @@ class Router {
         // Recibe el id del hotel por parametro para buscar el template y el mail del huesped por el body.
         router.post('/:idHotel/email/enviar', async (req, res, next) => {
             try {
-                var hotel = this.servHoteles.buscarPorId(req.params.idHotel)
-                this.emailService.sendInfo(req.body.email, hotel.template)
+                this.emailService.sendInfo(req.body.email, req.body.nombre, req.body.habitacion)
                 res.status(200).send({msg: "Enviado"})
             } catch(error) {
                 next(error)
             }
-        });        
+        });
 
         return router
     }
