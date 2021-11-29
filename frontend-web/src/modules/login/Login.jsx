@@ -17,22 +17,22 @@ const Login = () => {
     const history = useHistory()
 
     const buttonLogin = async () => {
-        let response;
+        let response;        
         
-        try{
-            if(idHotel === ""){
-                showAlertNotification('', "Debe seleccionar un hotel.", 'danger')
-            } else if(email !== "" && password !== ""){
+        if(idHotel === ""){
+            showAlertNotification('', "Debe seleccionar un hotel.", 'danger')
+        } else if(email === null || email === "" || password === "" || password === null){
+            showAlertNotification('', "Debe completar todos los campos.", 'danger')
+        } else {
+            try{
                 response = await callLogin(email, password, idHotel);
                 if (response) {
                     history.push("/home")
                 }
-            } else {
+            } catch {
                 showAlertNotification('', "Email y/o contraseña incorrecta.", 'danger')
             }
-        } catch (er) {
-            response = false
-        }
+        }        
     };
 
     const searchHotels = async () => {
@@ -53,6 +53,7 @@ const Login = () => {
 
     useEffect(() => {
         localStorage.setItem("idHotel", idHotel);
+        console.log(hotels)
     }, [idHotel])
 
 
