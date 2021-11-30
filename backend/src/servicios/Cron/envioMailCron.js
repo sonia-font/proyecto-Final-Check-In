@@ -1,6 +1,7 @@
 import cron from 'node-cron';
 import ServicioHoteles from '../servicioHoteles.js';
 import EmailService from '../../shared/mails/emailService.js';
+import Estado from '../../negocio/modelos/estado.js'
 
 
 class envioMailCron {
@@ -33,18 +34,18 @@ class envioMailCron {
                             const diffTiempo = this.calcularRestanteEnHoras(fechaInicio);
 
                             if(diffTiempo <= 24) {
-                                await this.servHoteles.actualizarReserva(hotelId, reserva.codigo, "iniciado", reserva.huesped.foto, reserva.huesped.tipo, reserva.huesped.documento, reserva.habitacion)
+                                await this.servHoteles.actualizarReserva(hotelId, reserva.codigo, null, null, Estado.INICIADO)
                                 await this.emailService.sendCheckIn(reserva.huesped.email,reserva.codigo,reserva.huesped.nombre,hotel.nombre,reserva.inicio)
                             }
 
                         }
-                        else if (reserva.estado == "completo") {
+                        else if (reserva.estado == "procesado") {
                             
                             const fechaFin = reserva.fin;
                             const diffTiempo = this.calcularRestanteEnHoras(fechaFin);
 
                             if(diffTiempo <= 24) {
-                                await this.servHoteles.actualizarReserva(hotelId, reserva.codigo, "finalizado", reserva.huesped.foto, reserva.huesped.tipo, reserva.huesped.documento, reserva.habitacion)
+                                await this.servHoteles.actualizarReserva(hotelId, reserva.codigo, null, null, Estado.FINALIZADO)
                             }
                         }
                     })
