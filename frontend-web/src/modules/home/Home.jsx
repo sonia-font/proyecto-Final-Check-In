@@ -4,7 +4,7 @@ import Background from '../../assets/img/homeImage.jpg'
 import Dropdown from 'react-dropdown';
 import Imagen from '../../assets/img/noImage.jpg'
 import '../home/home.css'
-import { searchReservation, updateReservation, deleteReservation, updateStateReservation } from '../../shared/Services/RequestService'
+import { searchReservation, updateReservation, deleteReservation, updateStateReservation, sendEmail } from '../../shared/Services/RequestService'
 import { showAlertNotification } from '../../shared/AlertNotification/AlertNotification'
 import { useHistory } from 'react-router-dom'
 
@@ -67,7 +67,6 @@ const Home = () => {
   }
 
   const actualizarDatos = async () => {
-    debugger
     if ((codigoReserva === "" || idHotel === '' || base64URL === "" || tipoDocumento === "" || numeroDocumento === "" || numeroHabitacion === "") && reservation.estado === "iniciado") {
       showAlertNotification('', "Para actualizar debe ingresar todos los datos.", 'danger')
     }else if (numeroHabitacion === "" && reservation.estado === "completo"){
@@ -77,6 +76,7 @@ const Home = () => {
       showAlertNotification('', data.msg, 'success')
     }
     searchRes();
+    sendEmail(idHotel, reservation.huesped.email)
   }
 
   const realizarCheckout = async () => {

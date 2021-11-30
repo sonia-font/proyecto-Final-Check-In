@@ -38,6 +38,14 @@ export const updateStateReservation = async (idHotel, codigoReserva, estado) => 
   return res.data;
 };
 
+export const sendEmail = async (idHotel, email) => {
+  let url = `http://localhost:8000/api/${idHotel}/email/enviar`;
+  let body = {email}
+  const res = await Axios.post(url, body);
+  return res.data;
+};
+
+
 export const deleteReservation = async (codigoReserva, idHotel) => {
   let url = `http://localhost:8000/api/${idHotel}/${codigoReserva}/huesped/borrar`;
   const res = await Axios.delete(url);
