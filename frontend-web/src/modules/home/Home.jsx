@@ -76,7 +76,7 @@ const Home = () => {
       showAlertNotification('', data.msg, 'success')
     }
     searchRes();
-    sendEmail(idHotel, reservation.huesped.email)
+    sendEmail(idHotel, reservation.huesped.email, reservation.huesped.nombre, numeroHabitacion)
   }
 
   const realizarCheckout = async () => {

@@ -38,9 +38,9 @@ export const updateStateReservation = async (idHotel, codigoReserva, estado) => 
   return res.data;
 };
 
-export const sendEmail = async (idHotel, email) => {
+export const sendEmail = async (idHotel, email, nombre, habitacion) => {
   let url = `http://localhost:8000/api/${idHotel}/email/enviar`;
-  let body = {email}
+  let body = {email, nombre, habitacion}
   const res = await Axios.post(url, body);
   return res.data;
 };
