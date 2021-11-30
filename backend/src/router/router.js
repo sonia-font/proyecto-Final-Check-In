@@ -161,7 +161,7 @@ class Router {
                 var ok = await this.servHoteles.validarHuesped(req.params.idHotel, req.params.codReserva, req.body.email)
                 if(ok){
                     const reserva = await this.servHoteles.buscarReserva(req.params.idHotel, req.params.codReserva)
-                    res.status(200).send({msg: "Bienvenido!", estado: reserva.estado})
+                    res.status(200).send({msg: "Bienvenido!", estado: reserva.estado})  
                 }else{
                     res.status(403).send({msg: "Datos de reserva invalidos"})
                 }  
@@ -197,7 +197,7 @@ class Router {
             } catch(error) {
                 next(error)
             }
-        });
+        });        
 
         return router
     }
