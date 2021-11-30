@@ -121,11 +121,11 @@ class ServicioHoteles {
                 
                 if(reserva.codigo == codigo){
 
-                    if(estado === null){
-
-                        //Update hecho por web
-                        if(isWeb){
-                            
+                    if(estado){                        
+                        reserva.estado = estado                                      
+                    }else{
+                         //Update hecho por web
+                        if(isWeb){                            
                             if(data.documento){
                                 //camino no feliz
                                 reserva.huesped.foto = data.foto
@@ -136,8 +136,7 @@ class ServicioHoteles {
                             }else{
                                 //camino feliz
                                 reserva.habitacion = data.habitacion
-                            }                            
-
+                            }  
                         }else{
                             //Update hecho por app mobile
                             reserva.huesped.foto = data.foto
@@ -145,10 +144,6 @@ class ServicioHoteles {
                             reserva.huesped.documento = data.documento
                             reserva.estado = Estado.COMPLETO
                         }
-                        
-                    }else{
-                        //Update interno
-                        reserva.estado = estado   
                     }
 
                     this.fiwareService.modifyEntity(hotel.id,reserva.codigo,reserva.estado)

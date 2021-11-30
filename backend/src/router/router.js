@@ -116,7 +116,7 @@ class Router {
         router.put('/:idHotel/:codReserva/actualizar/:isWeb',async (req, res, next) =>{
             try {
                 //req.body.foto = await this.parseService.convertToImage(req.body.foto)
-                await this.servHoteles.actualizarReserva(req.params.idHotel, req.params.codReserva, req.params.isWeb, req.body, null)
+                await this.servHoteles.actualizarReserva(req.params.idHotel, req.params.codReserva, req.params.isWeb, req.body, req.body.estado)
                 res.status(201).send({msg: "Reserva actualizada"})
             } catch(error) {
                 next(error)
