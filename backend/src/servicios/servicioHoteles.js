@@ -131,12 +131,13 @@ class ServicioHoteles {
                                 reserva.huesped.foto = data.foto
                                 reserva.huesped.tipo = data.tipo
                                 reserva.huesped.documento = data.documento
-                                reserva.habitacion = data.habitacion
-                                reserva.estado = Estado.COMPLETO
+                                reserva.habitacion = data.habitacion                                
                             }else{
                                 //camino feliz
                                 reserva.habitacion = data.habitacion
                             }  
+
+                            reserva.estado = Estado.PROCESADO
                         }else{
                             //Update hecho por app mobile
                             reserva.huesped.foto = data.foto
