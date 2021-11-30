@@ -31,6 +31,13 @@ export const updateReservation = async (idHotel, codigoReserva, imageToSend, tip
   return res.data;
 };
 
+export const updateStateReservation = async (idHotel, codigoReserva, estado) => {
+  let body = {estado}  
+  let url = `http://localhost:8000/api/${idHotel}/${codigoReserva}/actualizar/true`;
+  const res = await Axios.put(url, body);
+  return res.data;
+};
+
 export const deleteReservation = async (codigoReserva, idHotel) => {
   let url = `http://localhost:8000/api/${idHotel}/${codigoReserva}/huesped/borrar`;
   const res = await Axios.delete(url);

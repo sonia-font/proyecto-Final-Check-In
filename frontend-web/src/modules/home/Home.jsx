@@ -4,7 +4,7 @@ import Background from '../../assets/img/homeImage.jpg'
 import Dropdown from 'react-dropdown';
 import Imagen from '../../assets/img/noImage.jpg'
 import '../home/home.css'
-import { searchReservation, updateReservation, selectRoom, deleteReservation } from '../../shared/Services/RequestService'
+import { searchReservation, updateReservation, deleteReservation, updateStateReservation } from '../../shared/Services/RequestService'
 import { showAlertNotification } from '../../shared/AlertNotification/AlertNotification'
 import { useHistory } from 'react-router-dom'
 
@@ -17,17 +17,16 @@ const Home = () => {
   const [tipoDocumento, setTipoDocumento] = useState("");
   const [codigoReserva, setCodigoReserva] = useState("");
   const [numeroHabitacion, setNumeroHabitacion] = useState("");
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState("");
   const [base64URL, setBase64] = useState("");
   
   const history = useHistory()
 
   let idHotel = localStorage.getItem("idHotel")      
-  let data = "";
   const tiposDocumento = [{ "value": 0, "label": "DNI" }]
 
   const getBase64 = async (file) => {
-    return new Promise(resolve => {
+    return await new Promise(resolve => {
       let baseURL = "";
       // Make new FileReader
       let reader = new FileReader();
@@ -42,7 +41,7 @@ const Home = () => {
     });
   }
 
-  const searchRes = async () => {
+  const searchRes = async () => {   
     setNroReserva(true)
     if (codigoReserva === "") {
       showAlertNotification('', "Debe ingresar un codigo de reserva", 'danger')
@@ -68,6 +67,7 @@ const Home = () => {
   }
 
   const actualizarDatos = async () => {
+    debugger
     if ((codigoReserva === "" || idHotel === '' || base64URL === "" || tipoDocumento === "" || numeroDocumento === "" || numeroHabitacion === "") && reservation.estado === "iniciado") {
       showAlertNotification('', "Para actualizar debe ingresar todos los datos.", 'danger')
     }else if (numeroHabitacion === "" && reservation.estado === "completo"){
@@ -80,21 +80,13 @@ const Home = () => {
   }
 
   const realizarCheckout = async () => {
+    const updateState =  await updateStateReservation(idHotel, codigoReserva, "finalizado");
+    showAlertNotification('', updateState.msg, 'success')
     const data = await deleteReservation(codigoReserva, idHotel);
     showAlertNotification('', data.msg, 'success')
     setNroReserva(false)
     setNroHabitacion(false)
   }
-
-  // const asignarHabitacion = async () => {
-  //   if (numeroHabitacion === "" || codigoReserva === "" || idHotel === '') {
-  //     showAlertNotification('', "Debe seleccionar un número de habitación.", 'danger')
-  //   } else {
-  //     const data = await selectRoom(numeroHabitacion, codigoReserva, idHotel);
-  //     showAlertNotification('', data.msg, 'success')
-  //     setNroHabitacion(true)
-  //   }
-  // }
 
   const editDate = (date) => {
     let arrayDate = date.split("T")
@@ -103,16 +95,37 @@ const Home = () => {
     newDate = arrayDate[2] + "-" + arrayDate[1] + "-" + arrayDate[0];
     return newDate
   }
+
+  const editarFoto = (foto) => {
+    setFile(foto)
+    getBase64(foto)
+    .then(result => {
+      let splitResult = result.split(",")
+      setBase64(splitResult[1]);
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
   
   useEffect(() => {
   }, [reservation])
 
   useEffect(() => {
     setNumeroHabitacion("")
+    setBase64("")
+    setFile("")
   }, [])
 
   useEffect(() => {
   }, [numeroHabitacion])
+
+  useEffect(() => {
+  }, [file])
+
+  useEffect(() => {
+    debugger
+  }, [base64URL])
 
   useEffect(() => {
   }, [codigoReserva])
@@ -159,7 +172,7 @@ const Home = () => {
           top: "20px"
         }}
         >Buscar</button>
-         {/* <button onClick={signOff} style={{
+         <button onClick={signOff} style={{
                   color: "dimgray",
                   backgroundColor: "lightgray",
                   border: "2px solid lightgray",
@@ -167,10 +180,11 @@ const Home = () => {
                   width: "150px",
                   height: "50px",
                   fontSize: "70%",
-                  marginLeft: "450px",
+                  alignContent:"end",
+                  marginLeft: "650px",
                   marginTop:"20px"
                 }}
-                >Salir</button> */}
+                >Salir</button>
       </div>}
       {nroReserva && <div style={{
         width: "100vw",
@@ -193,6 +207,7 @@ const Home = () => {
           onChange={(e) => setCodigoReserva(e.target.value)}
           placeholder='Ingrese un codigo de reserva'
         />
+        <div>
         <button onClick={searchRes} style={{
           color: "dimgray",
           backgroundColor: "lightgray",
@@ -205,7 +220,20 @@ const Home = () => {
           left: "615px",
           top: "20px"
         }}
-        >Buscar</button>
+        >Buscar</button>        { <button onClick={signOff} style={{
+          color: "dimgray",
+          backgroundColor: "lightgray",
+          border: "2px solid lightgray",
+          fontWeight: "bolder",
+          width: "150px",
+          height: "50px",
+          fontSize: "70%",
+          alignContent:"end",
+          marginLeft: "650px",
+          marginTop:"20px"
+        }}
+        >Salir</button> }
+        </div>
         <Title className="title-container" />
         {reservation &&
           <table style={{
@@ -218,17 +246,10 @@ const Home = () => {
             fontSize: "medium"
           }}>
             <tr>
-              {reservation.estado === "iniciado" && <td rowSpan="9"><img src={Imagen} style={{ height: "80%", width: "80%" }} alt="foto-huesped" />{reservation.estado != "inactivo" && <input type="file" name="file" onChange={(e) => {
-                setFile(e.target.files[0]);
-                getBase64(file)
-                .then(result => {
-                  setBase64(result);
-                })
-                .catch(err => {
-                  console.log(err)
-                })}} />}</td>}
-              {reservation.estado === "inactivo" && <td rowSpan="9"><img src={Imagen} style={{ height: "80%", width: "80%" }} alt="foto-huesped" /></td>}
-              {!incompleteReservation && <td rowSpan="9"><img src={`data:image/jpeg;base64,${reservation.huesped.foto}`} style={{ height: "80%", width: "80%" }} alt="foto-huesped" /></td>}
+                {(reservation.estado === "iniciado" || (reservation.estado === "iniciado" && !reservation.huesped.foto))&& <td rowSpan="9"><div style={{ height: "250px", width: "250px", backgroundImage: `url(${Imagen})`, backgroundSize: "100% 100%" }}></div>{reservation.estado !== "inactivo" && <input type="file" name="file" onChange={(e) => {
+                editarFoto(e.target.files[0]);}} />}</td>}
+              {(reservation.estado === "inactivo" || reservation.estado === "finalizado") && <td rowSpan="9"><div  style={{ height: "250px", width: "250px", backgroundImage: `url(${Imagen})`, backgroundSize: "100% 100%" }}> </div></td>}
+              {reservation.estado === "completo" && <td  style={{ height: "50%", width: "50%" }} rowSpan="9"><div style={{ height: "auto", width: "250px", size:"fitContent"}}></div> <img src={`data:image/jpeg;base64,${reservation.huesped.foto}`} style={{height: "250px", width: "250px" }} alt="foto-huesped" /></td>}
               <td colSpan="2" className="table-title">Informacion personal</td>
             </tr>
             <tr>
@@ -244,9 +265,9 @@ const Home = () => {
               }}
                 onChange={(e) => setNumeroDocumento(e.target.value)}
                 /></td>}
-              {!incompleteReservation || reservation.estado != "inactivo" && <td className="table-data">{reservation.huesped.tipo} </td>}
-              {!incompleteReservation || reservation.estado != "inactivo" && <td className="table-data">{reservation.huesped.documento}</td>}
-              {!incompleteReservation || reservation.estado == "inactivo" && <td className="table-data">-</td>}
+              {reservation.estado !== "iniciado" && reservation.estado !== "inactivo" && <td className="table-data">{reservation.huesped.tipo} </td>}
+              {reservation.estado !== "iniciado" && reservation.estado !== "inactivo" && <td className="table-data">{reservation.huesped.documento}</td>}
+              {reservation.estado === "inactivo" && <td className="table-data">-</td>}
             </tr>
             <tr>
               <td className="table-subtitle">Email</td>
@@ -269,7 +290,7 @@ const Home = () => {
             </tr>
             <tr>
               <td className="table-subtitle">Estado</td>
-              {(reservation.estado === "iniciado" || reservation.estado === "completo") && <td className="table-subtitle">Habitacion</td>}
+              {(reservation.estado === "iniciado" || reservation.estado === "completo" || reservation.estado === "finalizado") && <td className="table-subtitle">Habitacion</td>}
             </tr>
             <tr>
               <td><div>{reservation.habitacion !== null &&  reservation.estado === "completo" && <button onClick={realizarCheckout} style={{
@@ -284,7 +305,7 @@ const Home = () => {
               >Realizar checkout</button>}</div></td>
               <td className="table-data">{reservation.estado}</td>
               {reservation.habitacion !== null && <td className="table-data">{reservation.habitacion}</td>}
-              <td>{(reservation.estado === "iniciado" || reservation.estado === "completo") && reservation.habitacion === null && <input style={{
+              <td style={{display:"flex"}}>{(reservation.estado === "iniciado" || reservation.estado === "completo") && reservation.habitacion === null && <input style={{
                 width: "50px",
                 height: "25px"
               }}
@@ -298,7 +319,7 @@ const Home = () => {
                   width: "70px",
                   height: "30px",
                   fontSize: "70%",
-                  marginLeft: "5px"
+                  marginLeft:"25px"
                 }}
                 >Asignar</button>}
                 {reservation.estado === "iniciado" && <button onClick={actualizarDatos} style={{
@@ -309,28 +330,13 @@ const Home = () => {
                   width: "70px",
                   height: "30px",
                   fontSize: "70%",
-                  marginTop:"10px"
+                  marginLeft:"25px"
+
                 }}
-                >Actualizar datos</button>}{!incompleteReservation || reservation.estado == "inactivo" && <td className="table-data">-</td>}</td>
-                
+                >Actualizar datos</button>}{!incompleteReservation || reservation.estado === "inactivo" && <td className="table-data">-</td>}</td>
             </tr>
-
-          </table>
-          
+          </table> 
         }
-                {/* <button onClick={signOff} style={{
-                  color: "dimgray",
-                  backgroundColor: "lightgray",
-                  border: "2px solid lightgray",
-                  fontWeight: "bolder",
-                  width: "150px",
-                  height: "50px",
-                  fontSize: "70%",
-                  marginLeft: "5px",
-                  marginTop:"40px"
-                }}
-                >Salir</button> */}
-
       </div>}
     </div>
   )
